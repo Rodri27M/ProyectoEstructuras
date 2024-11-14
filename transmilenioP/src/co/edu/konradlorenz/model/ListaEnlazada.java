@@ -29,11 +29,10 @@ public class ListaEnlazada {
         }
     }
     
-     public void MostarLista(){
-
+     public void MostarLista(){ 
         Nodo actual = cabeza;
         while (actual!= null){
-            System.out.println(actual.getConexa());
+            System.out.println(actual.getConexa().getNombreRuta());
             actual = actual.getNext();
         } 
     }
@@ -41,17 +40,17 @@ public class ListaEnlazada {
         if (nombre == null) 
             System.out.println("lista vacía");
         else
-            if (cabeza.next.getConexa() .equals(nombre)){
+            if (cabeza.next.getConexa().getNombreRuta().equals(nombre)){
             cabeza = cabeza.getNext();
             }
             else {
                 Nodo actual = cabeza;
-                while (actual.getNext()!=null && !actual.getNext().getConexa().equals(nombre))
+                while (actual.getNext()!=null && !actual.getNext().getConexa().getNombreRuta().equals(nombre))
                  {
                    actual = actual.getNext(); 
                  }
                 if (actual.getNext()== null )
-                        System.out.println ("elemento "+nombre+" no esta en la lista");
+                        System.out.println ("elemento " +nombre+ " no esta en la lista");
                     else{
                         actual.setNext(actual.getNext().getNext());
                     }

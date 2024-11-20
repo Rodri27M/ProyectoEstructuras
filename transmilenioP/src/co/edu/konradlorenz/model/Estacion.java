@@ -5,10 +5,11 @@ import java.util.ArrayList;
 
 
 public class Estacion {
+    
     private String nombreEstacion;
     private int capacidadMaxima;
     private int flujoPersonas;
-    private ListaEnlazada listaConexas;
+    private   ListaEnlazada listaConexas;
     private String saturacion;
     private boolean funcionamiento;
 
@@ -76,7 +77,12 @@ public class Estacion {
 
     @Override
     public String toString() {
-        return "Estacion{" + "nombreEstacion=" + nombreEstacion + ", capacidadMaxima=" + capacidadMaxima + ", flujoPersonas=" + flujoPersonas + ", saturacion=" + saturacion + ", funcionamiento=" + funcionamiento + '}';
+        return "Estacion{" + "nombreEstacion= " + nombreEstacion +
+                "capacidadMaxima= " + capacidadMaxima + ""
+                + "flujoPersonas= " + flujoPersonas + " "
+                + "saturacion= " + saturacion + " "
+                + "funcionamiento= " + 
+                funcionamiento + '}';
     }
 
     

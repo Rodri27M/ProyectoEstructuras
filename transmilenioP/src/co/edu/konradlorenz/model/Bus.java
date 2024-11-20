@@ -5,34 +5,30 @@ import java.time.LocalDateTime;
 
 
 public class Bus {
-    private String idBus;
+    private int idBus;
     private int capacidad;
     private String rutaAsignada;
-    private double nivelOcupacion;
-    private boolean enServicio;        
-    private boolean retrasado; 
-    private LocalDateTime horaUltimaActualizacion;
+    private String placa;
+    private String añoEntrada;
+    private int numAsientos;
 
     public Bus() {
     }
 
-    public Bus(String idBus, int capacidad, String rutaAsignada, double nivelOcupacion, boolean enServicio, boolean retrasado, LocalDateTime horaUltimaActualizacion) {
+    public Bus(int idBus, int capacidad, String rutaAsignada, String placa, String añoEntrada, int numAsientos) {
         this.idBus = idBus;
         this.capacidad = capacidad;
         this.rutaAsignada = rutaAsignada;
-        this.nivelOcupacion = nivelOcupacion;
-        this.enServicio = enServicio;
-        this.retrasado = retrasado;
-        this.horaUltimaActualizacion = horaUltimaActualizacion;
+        this.placa = placa;
+        this.añoEntrada = añoEntrada;
+        this.numAsientos = numAsientos;
     }
 
-  
-
-    public String getIdBus() {
+    public int getIdBus() {
         return idBus;
     }
 
-    public void setIdBus(String idBus) {
+    public void setIdBus(int idBus) {
         this.idBus = idBus;
     }
 
@@ -44,7 +40,6 @@ public class Bus {
         this.capacidad = capacidad;
     }
 
-
     public String getRutaAsignada() {
         return rutaAsignada;
     }
@@ -53,42 +48,40 @@ public class Bus {
         this.rutaAsignada = rutaAsignada;
     }
 
-    public LocalDateTime getHoraUltimaActualizacion() {
-        return horaUltimaActualizacion;
+    public String getPlaca() {
+        return placa;
     }
 
-    public void setHoraUltimaActualizacion(LocalDateTime horaUltimaActualizacion) {
-        this.horaUltimaActualizacion = horaUltimaActualizacion;
+    public void setPlaca(String placa) {
+        this.placa = placa;
     }
 
-    public double getNivelOcupacion() {
-        return nivelOcupacion;
+    public String getAñoEntrada() {
+        return añoEntrada;
     }
 
-    public void setNivelOcupacion(double nivelOcupacion) {
-        this.nivelOcupacion = nivelOcupacion;
+    public void setAñoEntrada(String añoEntrada) {
+        this.añoEntrada = añoEntrada;
     }
 
-    public boolean isEnServicio() {
-        return enServicio;
+    public int getNumAsientos() {
+        return numAsientos;
     }
 
-    public void setEnServicio(boolean enServicio) {
-        this.enServicio = enServicio;
-    }
-
-    public boolean isRetrasado() {
-        return retrasado;
-    }
-
-    public void setRetrasado(boolean retrasado) {
-        this.retrasado = retrasado;
+    public void setNumAsientos(int numAsientos) {
+        this.numAsientos = numAsientos;
     }
 
     @Override
     public String toString() {
-        return "Bus{" + "idBus=" + idBus + ", capacidad=" + capacidad + ", rutaAsignada=" + rutaAsignada + ", nivelOcupacion=" + nivelOcupacion + ", enServicio=" + enServicio + ", retrasado=" + retrasado + ", horaUltimaActualizacion=" + horaUltimaActualizacion + '}';
+        return "Bus{" + "idBus=" + idBus + ""
+                + "capacidad=" + capacidad + ""
+                + "rutaAsignada=" + rutaAsignada + ""
+                + "placa=" + placa + ""
+                + "a\u00f1oEntrada=" + añoEntrada + ""
+                + "numAsientos=" + numAsientos + '}';
     }
 
+   
        
 }

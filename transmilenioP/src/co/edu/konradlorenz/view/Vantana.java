@@ -19,12 +19,11 @@ public class Vantana {
                 + "5. Ver Alertas"
                 + "6. salir ");
     }
-    public int pedirEntero(){
-      
+    public int pedirEntero(){ 
         return sc.nextInt(); 
     }
     
-    public void monitoreo(){
+      public void monitoreo(){
         System.out.println("1. Registar cantidad de personas"
                 + "2. Ver alertas "
                 + "3. Salir");
@@ -33,7 +32,10 @@ public class Vantana {
     public void flota(){
         System.out.println("1. Agregar Bus"
                 + "2. Retirar bus"
-                + "3. Salir");
+                + "3. Accerder bus"
+                + "4. Modificar bus"
+                + "5. Ver lista de buses"
+                + "6. Salir");
     }
     
     

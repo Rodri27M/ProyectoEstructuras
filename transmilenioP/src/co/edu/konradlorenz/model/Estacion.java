@@ -56,7 +56,7 @@ public class Estacion {
     }
 
     public void addListaConexas(Ruta ruta) {
-        this.listaConexas.insertInicio(ruta);
+        this.listaConexas.insertFinal(ruta);
     }
 
     public String getSaturacion() {

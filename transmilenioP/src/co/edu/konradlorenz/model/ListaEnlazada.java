@@ -32,7 +32,7 @@ public class ListaEnlazada {
      public void MostarLista(){ 
         Nodo actual = cabeza;
         while (actual!= null){
-            System.out.println(actual.getConexa().getNombreRuta());
+            System.out.println(actual.getConexa().toString());
             actual = actual.getNext();
         } 
     }
@@ -50,10 +50,31 @@ public class ListaEnlazada {
                    actual = actual.getNext(); 
                  }
                 if (actual.getNext()== null )
-                        System.out.println ("elemento " +nombre+ " no esta en la lista");
+                        System.out.println ("Elemento " +nombre+ " no esta en la lista");
                     else{
                         actual.setNext(actual.getNext().getNext());
                     }
             }
     }
+     public Nodo buscar(String nombre) {
+    Nodo actual = cabeza;
+    while (actual != null) {
+        if (actual.getConexa().getNombreRuta().equals(nombre)) {
+            return actual; 
+        }
+        actual = actual.getNext();
+    }
+    return null; 
+}
+     public boolean modificar(String nombre, Ruta nuevaRuta) {
+    Nodo actual = cabeza;
+    while (actual != null) {
+        if (actual.getConexa().getNombreRuta().equals(nombre)) {
+            actual.setConexa(nuevaRuta); 
+            return true; 
+        }
+        actual = actual.getNext();
+    }
+    return false; 
+}
 }

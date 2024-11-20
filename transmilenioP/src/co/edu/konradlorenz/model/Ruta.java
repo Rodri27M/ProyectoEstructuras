@@ -1,4 +1,4 @@
-
+ 
 package co.edu.konradlorenz.model;
 
 
@@ -53,7 +53,11 @@ public class Ruta {
 
     @Override
     public String toString() {
-        return "Ruta{" + "nombreRuta=" + nombreRuta + ", origen=" + origen + ", destino=" + destino + ", tiempoEstimado=" + tiempoEstimado + '}';
+        return "Ruta{" +
+                "nombreRuta=" + nombreRuta + 
+                " origen=" + origen + 
+                " destino=" + destino + 
+                " tiempoEstimado=" + tiempoEstimado + '}';
     }
     
     

@@ -15,9 +15,10 @@ public class Vantana {
         System.out.println("1. Monitoreo"
                 + "2. Gestion de Flota"
                 + "3. Recorrido de Buses"
-                + "4. Calcular rutas"
-                + "5. Ver Alertas"
-                + "6. salir ");
+                + "4. Calcular rutas"//Grafos(En evaulacion)
+                + "5. Gestion de rutas"
+                + "6. Ver Alertas"
+                + "7. salir ");
     }
     public int pedirEntero(){ 
         return sc.nextInt(); 
@@ -38,5 +39,16 @@ public class Vantana {
                 + "6. Salir");
     }
     
+    public String pedirString(){
+        return sc.next();
+    }
+    
+    public void gentionRutas(){
+        System.out.println("1. Agregar Ruta"
+                + "2. Eliminar Ruta"
+                + "3. Modificar Ruta"
+                + "4. Ver listado de Rutas"
+                + "5. salir");
+    }
     
 }

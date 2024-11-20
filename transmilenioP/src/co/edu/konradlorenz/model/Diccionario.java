@@ -25,5 +25,9 @@ public void eliminarBus(int id){
     buses.remove(id);
 }
 
+    public HashMap<Integer, Bus> getBuses() {
+        return buses;
+    }
+
 
 }

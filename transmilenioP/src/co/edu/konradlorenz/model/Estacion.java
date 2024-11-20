@@ -16,14 +16,16 @@ public class Estacion {
     public Estacion() {
     }
 
-    public Estacion(String nombreEstacion, int capacidadMaxima, int flujoPersonas, String saturacion, boolean funcionamiento) {
+    public Estacion(String nombreEstacion, int capacidadMaxima, int flujoPersonas, ListaEnlazada listaConexas, String saturacion, boolean funcionamiento) {
         this.nombreEstacion = nombreEstacion;
         this.capacidadMaxima = capacidadMaxima;
         this.flujoPersonas = flujoPersonas;
-       
+        this.listaConexas = new ListaEnlazada();
         this.saturacion = saturacion;
         this.funcionamiento = funcionamiento;
     }
+
+   
 
   
 
@@ -51,8 +53,8 @@ public class Estacion {
         this.flujoPersonas = flujoPersonas;
     }
 
-    public void getListaConexas() {
-        listaConexas.MostarLista();
+    public String getListaConexas() {
+       return listaConexas.MostarLista();
     }
 
     public void addListaConexas(Ruta ruta) {
@@ -77,12 +79,11 @@ public class Estacion {
 
     @Override
     public String toString() {
-        return "Estacion{" + "nombreEstacion= " + nombreEstacion +
-                "capacidadMaxima= " + capacidadMaxima + ""
-                + "flujoPersonas= " + flujoPersonas + " "
-                + "saturacion= " + saturacion + " "
-                + "funcionamiento= " + 
-                funcionamiento + '}';
+        return "Estacion{" + "\nnombreEstacion= " + nombreEstacion +
+                "\ncapacidadMaxima= " + capacidadMaxima + ""
+                + "\nflujoPersonas= " + flujoPersonas + " "
+                + "\nsaturacion= " + saturacion + " "
+                + "\nfuncionamiento= " + funcionamiento + '}';
     }
 
     

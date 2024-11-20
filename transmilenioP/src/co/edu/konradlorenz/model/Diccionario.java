@@ -5,13 +5,13 @@ import java.util.HashMap;
 
 
 public class Diccionario {
-    private HashMap<Integer, Bus> buses;
+    private HashMap<Integer, Bus> buses = new HashMap();
 
     public Diccionario() {
     }
 
     public Diccionario(HashMap<Integer, Bus> buses) {
-        this.buses = buses;
+        this.buses = new HashMap<>();
     }
 
 public void agregarBus(Bus bus){

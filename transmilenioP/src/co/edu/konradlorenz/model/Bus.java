@@ -75,11 +75,11 @@ public class Bus {
     @Override
     public String toString() {
         return "Bus{" + "idBus=" + idBus + ""
-                + "capacidad=" + capacidad + ""
-                + "rutaAsignada=" + rutaAsignada + ""
-                + "placa=" + placa + ""
-                + "a\u00f1oEntrada=" + añoEntrada + ""
-                + "numAsientos=" + numAsientos + '}';
+                + "\ncapacidad=" + capacidad + ""
+                + "\nrutaAsignada=" + rutaAsignada + ""
+                + "\nplaca=" + placa + ""
+                + "\na\u00f1oEntrada=" + añoEntrada + ""
+                + "\nnumAsientos=" + numAsientos + '}';
     }
 
    

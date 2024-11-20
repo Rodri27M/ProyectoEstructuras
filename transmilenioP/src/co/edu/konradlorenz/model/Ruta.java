@@ -54,10 +54,10 @@ public class Ruta {
     @Override
     public String toString() {
         return "Ruta{" +
-                "nombreRuta=" + nombreRuta + 
-                " origen=" + origen + 
-                " destino=" + destino + 
-                " tiempoEstimado=" + tiempoEstimado + '}';
+                "\nnombreRuta=" + nombreRuta + 
+                "\n origen=" + origen + 
+                "\n destino=" + destino + 
+                "\n tiempoEstimado=" + tiempoEstimado + '}';
     }
     
     

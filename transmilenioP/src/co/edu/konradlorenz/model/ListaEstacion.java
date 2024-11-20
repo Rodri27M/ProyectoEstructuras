@@ -5,10 +5,10 @@ import java.util.ArrayList;
 
 
 public class ListaEstacion {
-    ArrayList<Estacion> estacion;
+  private ArrayList<Estacion> estacion = new ArrayList<>();
 
     public ListaEstacion(ArrayList<Estacion> estacion) {
-        this.estacion = estacion;
+        this.estacion = new ArrayList<>();
     }
 
     public ListaEstacion() {

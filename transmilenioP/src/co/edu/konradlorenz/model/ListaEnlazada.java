@@ -29,15 +29,22 @@ public class ListaEnlazada {
         }
     }
     
-     public void MostarLista(){ 
+     public String MostarLista(){
+         String men = null;
         Nodo actual = cabeza;
+        if(cabeza == null){
+            men = "Lista vacia";
+        }else{
         while (actual!= null){
-            System.out.println(actual.getConexa().toString());
+             men = actual.getConexa().toString();
             actual = actual.getNext();
         } 
+        }
+        return men;
     }
+     
      public void borrar (String nombre){
-        if (nombre == null) 
+        if (cabeza == null) 
             System.out.println("lista vacía");
         else
             if (cabeza.next.getConexa().getNombreRuta().equals(nombre)){
@@ -58,14 +65,23 @@ public class ListaEnlazada {
     }
      public Nodo buscar(String nombre) {
     Nodo actual = cabeza;
+    if(cabeza == null){
+        System.out.println("Lista vacia");
+    }else{
     while (actual != null) {
         if (actual.getConexa().getNombreRuta().equals(nombre)) {
             return actual; 
         }
         actual = actual.getNext();
-    }
-    return null; 
+
+
 }
+   
+}
+    return null; 
+     }
+     
+ 
      public boolean modificar(String nombre, Ruta nuevaRuta) {
     Nodo actual = cabeza;
     while (actual != null) {

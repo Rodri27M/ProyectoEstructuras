@@ -3,24 +3,24 @@ package co.edu.konradlorenz.model;
 
 
 public class Usuario {
-    private String id;
+    private int id;
     private boolean accesoAutorizado;
     private String tipoUsuario;
 
     public Usuario() {
     }
 
-    public Usuario(String id, boolean accesoAutorizado, String tipoUsuario) {
+    public Usuario(int id, boolean accesoAutorizado, String tipoUsuario) {
         this.id = id;
         this.accesoAutorizado = accesoAutorizado;
         this.tipoUsuario = tipoUsuario;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -42,7 +42,9 @@ public class Usuario {
 
     @Override
     public String toString() {
-        return "Usuario{" + "id=" + id + ", accesoAutorizado=" + accesoAutorizado + ", tipoUsuario=" + tipoUsuario + '}';
+        return "Usuario{" + "\nid=" + id 
+                + "\naccesoAutorizado=" + accesoAutorizado 
+                + "\n tipoUsuario=" + tipoUsuario + '}';
     }
     
     

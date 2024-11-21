@@ -14,19 +14,19 @@ public class Vantana {
     public void menu(){
         System.out.println("1. Monitoreo"
                 + "\n2. Gestion de Flota"
-                + "\n3. Recorrido de Buses"
-                + "\n4. Calcular rutas"//Grafos(En evaulacion)
-                + "\n5. Gestion de rutas"
-                + "\n6. Ver Alertas"
-                + "\n7. Validar acceso"
-                + "\n8. salir ");
+                + "\n3. Calcular rutas"//Grafos(En evaulacion)
+                + "\n4. Gestion de rutas"
+                + "\n5. Validar acceso"
+                + "\n6. salir ");
     }
    
     
       public void monitoreo(){
         System.out.println("1. Registar cantidad de personas"
-                + "\n2. Ver alertas "
-                + "\n3. Salir");
+                + "\n2. Ver alertas"
+                + "\n3. Ver paradas por Estacion"
+                + "\n4. Estado de las Estaciones "
+                + "\n5. Salir");
     }
     
     public void flota(){
@@ -34,8 +34,9 @@ public class Vantana {
                 + "\n2. Retirar bus"
                 + "\n3. Accerder bus"
                 + "\n4. Modificar bus"
-                + "\n5. Ver lista de buses"
-                + "\n6. Salir");
+                + "\n5. Asignar Ruta"
+                + "\n6. Lista de Buses"
+                + "\n7. salir");
     }
     
    public int pedirEntero(){
@@ -63,7 +64,7 @@ public class Vantana {
     }
 
   public String pedirString(){
-      return  sc.nextLine();
+      return  sc.next();
   }
     
 }

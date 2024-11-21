@@ -1,16 +1,17 @@
 
-package co.edu.konradlorenz.model;
+package co.edu.konradlorenz.model.estructuras;
 
+import co.edu.konradlorenz.model.Usuario;
 import java.util.Hashtable;
 
 
-public class HashTable {
+public class ListaUsuarios {
  private Hashtable<Integer, Usuario> usuarios = new Hashtable<>();
 
-    public HashTable() {
+    public ListaUsuarios() {
     }
 
-    public HashTable(Hashtable<Integer, Usuario> usuarios) {
+    public ListaUsuarios(Hashtable<Integer, Usuario> usuarios) {
         this.usuarios = new Hashtable<>();
     }
     

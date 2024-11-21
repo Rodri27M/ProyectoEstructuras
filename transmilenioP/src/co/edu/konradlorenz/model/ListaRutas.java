@@ -1,26 +1,28 @@
 
 package co.edu.konradlorenz.model;
 
+import co.edu.konradlorenz.model.estructuras.ListaEstacion;
 
-public class ListaEnlazada {
-    private Nodo cabeza;
 
-    public ListaEnlazada() {
+public class ListaRutas {
+    private NodoRutas cabeza;
+
+    public ListaRutas() {
         cabeza = null;
     }
     
     public void insertInicio (Ruta Dat){
-        Nodo nuevo = new Nodo (Dat, cabeza);
+        NodoRutas nuevo = new NodoRutas (Dat, cabeza);
         cabeza = nuevo;
     }
      
      public void insertFinal (Ruta Dat){ 
-        Nodo nuevo = new Nodo(Dat, null);
+        NodoRutas nuevo = new NodoRutas(Dat, null);
         if (cabeza == null){
         cabeza = nuevo;
         }
         else {
-            Nodo actual = cabeza;
+            NodoRutas actual = cabeza;
             while (actual.getNext()!= null){
                 actual = actual.getNext();
 
@@ -31,7 +33,7 @@ public class ListaEnlazada {
     
      public String MostarLista(){
           StringBuilder men = new StringBuilder();
-        Nodo actual = cabeza;
+        NodoRutas actual = cabeza;
         if(cabeza == null){
             return "Lista vacia";
         }
@@ -55,7 +57,7 @@ public class ListaEnlazada {
             cabeza = cabeza.getNext();
             }
             else {
-                Nodo actual = cabeza;
+                NodoRutas actual = cabeza;
                 while (actual.getNext()!=null && !actual.getNext().getConexa().getNombreRuta().equals(nombre))
                  {
                    actual = actual.getNext(); 
@@ -67,8 +69,8 @@ public class ListaEnlazada {
                     }
             }
     }
-     public Nodo buscar(String nombre) {
-    Nodo actual = cabeza;
+     public NodoRutas buscar(String nombre) {
+    NodoRutas actual = cabeza;
     if(cabeza == null){
         System.out.println("Lista vacia");
     }else{
@@ -87,7 +89,7 @@ public class ListaEnlazada {
      
  
      public boolean modificar(String nombre, Ruta nuevaRuta) {
-    Nodo actual = cabeza;
+    NodoRutas actual = cabeza;
     while (actual != null) {
         if (actual.getConexa().getNombreRuta().equals(nombre)) {
             actual.setConexa(nuevaRuta); 
@@ -97,8 +99,8 @@ public class ListaEnlazada {
     }
     return false; 
 }
-     public void asignarRutasEstaciones(ListaEnlazada objEnlazada, ListaEstacion objEstacion){
-         Nodo actual = cabeza;
+     public void asignarRutasEstaciones(ListaRutas objEnlazada, ListaEstacion objEstacion){
+         NodoRutas actual = cabeza;
          while(actual != null){
              Ruta ruta = actual.getConexa();
              Estacion origen = objEstacion.buscarNombre(ruta.getOrigen());
@@ -113,7 +115,7 @@ public class ListaEnlazada {
          }
      }
      
-     public Nodo getCabeza(){
+     public NodoRutas getCabeza(){
          return cabeza;
      }
 }

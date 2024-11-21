@@ -9,18 +9,18 @@ public class Estacion {
     private String nombreEstacion;
     private int capacidadMaxima;
     private int flujoPersonas;
-    private ListaEnlazada listaConexas;
+    private ListaRutas listaConexas;
     private String saturacion;
     private boolean funcionamiento;
 
     public Estacion() {
     }
 
-    public Estacion(String nombreEstacion, int capacidadMaxima, int flujoPersonas, ListaEnlazada listaConexas, String saturacion, boolean funcionamiento) {
+    public Estacion(String nombreEstacion, int capacidadMaxima, int flujoPersonas, ListaRutas listaConexas, String saturacion, boolean funcionamiento) {
         this.nombreEstacion = nombreEstacion;
         this.capacidadMaxima = capacidadMaxima;
         this.flujoPersonas = flujoPersonas;
-        this.listaConexas = new ListaEnlazada();
+        this.listaConexas = new ListaRutas();
         this.saturacion = saturacion;
         this.funcionamiento = funcionamiento;
     }
@@ -72,7 +72,7 @@ public class Estacion {
     public void setFuncionamiento(boolean funcionamiento) {
         this.funcionamiento = funcionamiento;
     }
-      public ListaEnlazada getListaRutasConexas() {
+      public ListaRutas getListaRutasConexas() {
         return listaConexas; 
     }
     
@@ -88,7 +88,7 @@ public class Estacion {
     
    public String mostrarRutasConexas(){
        String mostrar = " ";
-       Nodo actual = listaConexas.getCabeza();
+       NodoRutas actual = listaConexas.getCabeza();
        if(actual == null){
            return "No hay rutas conexas";
        }

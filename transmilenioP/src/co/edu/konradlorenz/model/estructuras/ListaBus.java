@@ -1,21 +1,22 @@
 
-package co.edu.konradlorenz.model;
+package co.edu.konradlorenz.model.estructuras;
 
+import co.edu.konradlorenz.model.Bus;
 import java.util.HashMap;
 
 
-public class Diccionario {
+public class ListaBus {
     private HashMap<Integer, Bus> buses = new HashMap();
 
-    public Diccionario() {
+    public ListaBus() {
     }
 
-    public Diccionario(HashMap<Integer, Bus> buses) {
+    public ListaBus(HashMap<Integer, Bus> buses) {
         this.buses = new HashMap<>();
     }
 
 public void agregarBus(Bus bus){
-    buses.put(bus.getIdBus(), bus);
+    buses.put(bus.getIdBus( ), bus);
 }    
 public Bus obtenerBus(int id){
     return buses.get(id);

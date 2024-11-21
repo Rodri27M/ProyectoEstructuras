@@ -1,6 +1,7 @@
 
-package co.edu.konradlorenz.model;
+package co.edu.konradlorenz.model.estructuras;
 
+import co.edu.konradlorenz.model.Estacion;
 import java.util.ArrayList;
 
 

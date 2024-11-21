@@ -2,11 +2,11 @@
 package co.edu.konradlorenz.model;
 
 
-public class Nodo {
+public class NodoRutas {
     Ruta conexa;
-    Nodo next;
+    NodoRutas next;
 
-    public Nodo(Ruta conexa, Nodo next) {
+    public NodoRutas(Ruta conexa, NodoRutas next) {
         this.conexa = conexa;
         this.next = next;
     }
@@ -19,11 +19,11 @@ public class Nodo {
         this.conexa = conexa;
     }
 
-    public Nodo getNext() {
+    public NodoRutas getNext() {
         return next;
     }
 
-    public void setNext(Nodo next) {
+    public void setNext(NodoRutas next) {
         this.next = next;
     }
     

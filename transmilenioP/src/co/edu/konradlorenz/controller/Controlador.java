@@ -1,11 +1,11 @@
  
 package co.edu.konradlorenz.controller;
 import co.edu.konradlorenz.model.Bus;
-import co.edu.konradlorenz.model.Diccionario;
+import co.edu.konradlorenz.model.estructuras.ListaBus;
 import co.edu.konradlorenz.model.Estacion;
-import co.edu.konradlorenz.model.HashTable;
-import co.edu.konradlorenz.model.ListaEnlazada;
-import co.edu.konradlorenz.model.ListaEstacion;
+import co.edu.konradlorenz.model.estructuras.ListaUsuarios;
+import co.edu.konradlorenz.model.ListaRutas;
+import co.edu.konradlorenz.model.estructuras.ListaEstacion;
 import co.edu.konradlorenz.model.Ruta;
 import co.edu.konradlorenz.model.Usuario;
 import co.edu.konradlorenz.view.Vantana;
@@ -14,49 +14,44 @@ public class Controlador {
     Vantana objVantana = new Vantana();
     ListaEstacion objEstacion = new ListaEstacion();
     Estacion objEstacion1 = new Estacion();
-    Diccionario objDiccionario = new Diccionario();
+    ListaBus objDiccionario = new ListaBus();
     Usuario objUsuario = new Usuario();
-    HashTable objHashTable = new HashTable();
+    ListaUsuarios objHashTable = new ListaUsuarios();
     Bus objBus = new Bus();
     Ruta objRuta = new Ruta();
-    ListaEnlazada objEnlazada = new ListaEnlazada();
+    ListaRutas objEnlazada = new ListaRutas();
     public void run(){
         objVantana.mostrarMensaje(" ");
          datosPrecargados();
         int op;
         do{
+            objVantana.mostrarMensaje("--MENU PRINCIPAL--");
             objVantana.mostrarMensaje(" ");
             objVantana.menu();
             op = entero();
         switch (op) {
             case 1:
-                monitoreoEstacion();
+                monitoreo();
                 break;
             case 2:
                 gestionFlota();
                 break;
             case 3:
                 objVantana.mostrarMensaje("Sin implementacion");
-            break;
-            case 4:
-                objVantana.mostrarMensaje("Sin implementacion");
                 break;
-            case 5:
+            case 4:
                 gentionRutas();
                 break;
-            case 6:
-                   alertas();
-            break;
-            case 7:
+            case 5:
                 validarAcceso();
                 break;
-            case 8:
+            case 6:
                 objVantana.mostrarMensaje("saliendo del Programa");
                 break;
             default:
                 objVantana.mostrarMensaje("Opcion invalida. Por favor, ingresar una de las opciones disponibles.");
         }
-        }while (op!=8);           
+        }while (op!=6);           
                
     }
  public void monitoreoEstacion(){
@@ -70,13 +65,11 @@ public class Controlador {
 }else{
      for(Estacion estacion : objEstacion.getEstacion() ){
          objVantana.mostrarMensaje("Estacion: " + estacion.getNombreEstacion());
-         objVantana.mostrarMensaje("Capacidad de la Estacion " + estacion.getCapacidadMaxima());
-         objVantana.mostrarMensaje("Flujo de personas. " + estacion.getFlujoPersonas());
+         objVantana.mostrarMensaje("Capacidad de la Estacion: " + estacion.getCapacidadMaxima());
+         objVantana.mostrarMensaje("Flujo de personas: " + estacion.getFlujoPersonas());
          objVantana.mostrarMensaje("Saturacion: " + estacion.getSaturacion());
          objVantana.mostrarMensaje("Funcionamiento: " + servicio(estacion.isFuncionamiento()));
-         objVantana.mostrarMensaje("Paradas de Rutas: " );
          objVantana.mostrarMensaje(" ");
-         mostrarEstacionesRutas();
 
 }
      }
@@ -111,12 +104,12 @@ public class Controlador {
      // Metodo de agregar datos de la estacion(Se esta validando si se desea agregar los datos precargados)
      String nombre, saturacion;
      int capacidad, flujo;
-     ListaEnlazada paradas;
+     ListaRutas paradas;
      boolean servicio;
-     objVantana.mostrarMensaje("Agregando estacion");
+     objVantana.mostrarMensaje("--Agregando estacion--");
      objVantana.mostrarMensaje("Ingrese el nombre de la estacion");
      nombre = objVantana.pedirString();
-     objVantana.mostrarMensaje("Ingrese las parradas");
+     objVantana.mostrarMensaje("Ingrese las paradas");
      paradas = null; // En proceso
      objVantana.mostrarMensaje("Ingrese la capacidad maxima de la estacion");
      capacidad = objVantana.pedirEntero();
@@ -138,6 +131,7 @@ public class Controlador {
      objVantana.mostrarMensaje(" ");
      int op;
      do {  
+         objVantana.mostrarMensaje("--Gestion de Flota--");
      objVantana.flota();
      op = entero();
      switch (op){
@@ -183,8 +177,6 @@ public class Controlador {
   capacidad = objVantana.pedirEntero();
   objVantana.mostrarMensaje("Ingrese el numero de asientos del bus:");
   asientos = objVantana.pedirEntero();
- // objVantana.mostrarMensaje("Ingrese la ruta asignada del proyecto");
- // ruta = objVantana.pedirString();
   Bus agregar = new Bus(ID, capacidad, null, placa, entrada, asientos);
   objDiccionario.agregarBus(agregar);
  }
@@ -275,9 +267,10 @@ public class Controlador {
  
  public void gentionRutas(){
      objVantana.mostrarMensaje(" ");
-     objVantana.mostrarMensaje("Gestion de Rutas:");
+     
       int op;
-     do { 
+     do {
+     objVantana.mostrarMensaje("---Gestion de Rutas---");
      objVantana.mostrarMensaje(" ");
      objVantana.gestionRutas();
      op = entero();
@@ -330,7 +323,7 @@ public class Controlador {
  }
  
  public void modificarRuta(){
-     objVantana.mostrarMensaje("Modificando Ruta");
+     objVantana.mostrarMensaje("--Modificando Ruta--");
      String nombre, origen, destino;
      int tiempo;
      objVantana.mostrarMensaje("Nombre de la ruta a modificar");
@@ -379,6 +372,7 @@ public class Controlador {
      objVantana.mostrarMensaje(" ");
      int op;
      do {
+         objVantana.mostrarMensaje("---VALIDACION---");
          objVantana.mostrarMensaje(" ");
        objVantana.acceso();
      op = entero();
@@ -399,7 +393,7 @@ public class Controlador {
  }
  
  public void ingresar(){
-     objVantana.mostrarMensaje("Ingresando Usuariuo");
+     objVantana.mostrarMensaje("--Ingresando Usuariuo--");
      objVantana.mostrarMensaje("Ingrese el ID del usuario");
      int id = objVantana.pedirEntero();
      objVantana.mostrarMensaje("Ingrese acceso: 1.Autorizado o 2.Denegado");
@@ -428,7 +422,7 @@ public class Controlador {
  }
  
  public void validar(){
-     objVantana.mostrarMensaje("Validando acceso");
+     objVantana.mostrarMensaje("--Validando acceso--");
      objVantana.mostrarMensaje("Ingrese ID del usuario");
      int id = objVantana.pedirEntero();
      if(objHashTable.getUsuarios().isEmpty()){
@@ -445,9 +439,10 @@ public class Controlador {
  }
  
  public void mostrarEstacionesRutas(){
+     objVantana.mostrarMensaje("--Listas de Paradas Por Estacion--");
      for (Estacion estacion : objEstacion.getEstacion()) {
          objVantana.mostrarMensaje(" ");
-         objVantana.mostrarMensaje("Estacion " + estacion.getNombreEstacion());
+         objVantana.mostrarMensaje("Estacion: " + estacion.getNombreEstacion());
          objVantana.mostrarMensaje("Rutas conexas: ");
          String conexa = estacion.mostrarRutasConexas();
          if(conexa != null && !conexa.isEmpty()){
@@ -458,7 +453,36 @@ public class Controlador {
      }
  }
 
- 
+ public void monitoreo(){
+     
+     int op;
+     do{
+         objVantana.mostrarMensaje("---MONITOREO---");
+       objVantana.monitoreo();
+       op = entero();
+         switch (op) {
+             case 1:
+                 registrarCantidad();
+                 break;
+             case 2:
+                 alertas();
+                 break; 
+             case 3:
+                 mostrarEstacionesRutas();
+                 break;
+             case 4:
+                 monitoreoEstacion();
+                 break;  
+             case 5:
+                 objVantana.mostrarMensaje("Saliendo del programa");
+                 break;
+             default:
+                 objVantana.mostrarMensaje("Opcion Invalida. Ingresar datos validos");
+         }
+    
+         
+     } while(op!=5);
+ }
  
  public void datosPrecargados(){
      
@@ -523,5 +547,9 @@ public class Controlador {
       
         return numero;
   }
+
+    private void registrarCantidad() {
+  objVantana.mostrarMensaje("Metodo sin implementacion");
+    }
  
 }

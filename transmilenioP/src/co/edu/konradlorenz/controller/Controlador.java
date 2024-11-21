@@ -1,4 +1,4 @@
-
+ 
 package co.edu.konradlorenz.controller;
 import co.edu.konradlorenz.model.Bus;
 import co.edu.konradlorenz.model.Diccionario;
@@ -27,7 +27,7 @@ public class Controlador {
         do{
             objVantana.mostrarMensaje(" ");
             objVantana.menu();
-            op = objVantana.pedirEntero();
+            op = entero();
         switch (op) {
             case 1:
                 monitoreoEstacion();
@@ -77,7 +77,7 @@ public class Controlador {
          objVantana.mostrarMensaje("Paradas de Rutas: " );
          objVantana.mostrarMensaje(" ");
          mostrarEstacionesRutas();
-         objVantana.mostrarMensaje("  ");
+
 }
      }
      }
@@ -139,7 +139,7 @@ public class Controlador {
      int op;
      do {  
      objVantana.flota();
-     op = objVantana.pedirEntero();
+     op = entero();
      switch (op){
          case 1:
                 agregarBus();
@@ -154,15 +154,18 @@ public class Controlador {
                 modificarBus();
                 break;
             case 5:
-                listaBus();
+                asignarRuta();
                 break;
             case 6:
+                listaBus();
+                break;
+            case 7:
                 objVantana.mostrarMensaje("Saliendo de gestionar flota");
                 break;
             default:
                 objVantana.mostrarMensaje("Opcion Invalida. Por favor, ingresar una de las opciones disponibles");
      }
-     } while (op!=6);
+     } while (op!=7);
  }
  
  public void agregarBus(){
@@ -180,9 +183,9 @@ public class Controlador {
   capacidad = objVantana.pedirEntero();
   objVantana.mostrarMensaje("Ingrese el numero de asientos del bus:");
   asientos = objVantana.pedirEntero();
-  objVantana.mostrarMensaje("Ingrese la ruta asignada del proyecto");
-  ruta = objVantana.pedirString();
-  Bus agregar = new Bus(ID, capacidad, ruta, placa, entrada, asientos);
+ // objVantana.mostrarMensaje("Ingrese la ruta asignada del proyecto");
+ // ruta = objVantana.pedirString();
+  Bus agregar = new Bus(ID, capacidad, null, placa, entrada, asientos);
   objDiccionario.agregarBus(agregar);
  }
  
@@ -239,6 +242,26 @@ public class Controlador {
      }
  }
  
+ public void asignarRuta(){
+     objVantana.mostrarMensaje("---Asignado Ruta---");
+     objVantana.mostrarMensaje("Ingrese el ID del Bus");
+     int id = objVantana.pedirEntero();
+     Bus bus = objDiccionario.obtenerBus(id);
+       if( bus !=null){
+           listaRutas();
+           objVantana.mostrarMensaje("Ingrese El nombre de la ruta que se va asignar");
+           String nombre = objVantana.pedirString();
+           
+          String p =  objEnlazada.buscar(nombre).getConexa().getNombreRuta();
+          if(p!=null){
+          bus.setRutaAsignada(p);
+          objVantana.mostrarMensaje("Ruta asignada");
+          }
+       }else{
+           objVantana.mostrarMensaje("Bus no encontrado");
+       }
+ }
+ 
  public void listaBus(){
      if(objDiccionario.getBuses()==null){
          objVantana.mostrarMensaje("No hay lista de Buses");
@@ -256,8 +279,8 @@ public class Controlador {
       int op;
      do { 
      objVantana.mostrarMensaje(" ");
-     objVantana.gentionRutas();
-     op = objVantana.pedirEntero();
+     objVantana.gestionRutas();
+     op = entero();
      switch (op){
          case 1:
                 agregarRuta();
@@ -266,18 +289,21 @@ public class Controlador {
                 eliminarRuta();
                 break;
             case 3:
-                modificarRuta();
+                 asignarRuta(); 
             break;
             case 4:
-                listaRutas();
+               modificarRuta();
                 break;
             case 5:
+                listaRutas();
+                break;
+            case 6:
                 objVantana.mostrarMensaje("Saliendo de gestion de rutas");
                 break;
             default:
                 objVantana.mostrarMensaje("Opcion invalidad. Por favor, ingresar una de las opciones disponibles");
      }
-     } while (op!=5);
+     } while (op!=6);
  }
  public void agregarRuta(){
      objVantana.mostrarMensaje("Ruta Nueva:");
@@ -311,14 +337,14 @@ public class Controlador {
      nombre = objVantana.pedirString();
      
      if(objEnlazada.buscar(nombre) != null){
-         
+     objRuta.setNombreRuta(nombre);
      objVantana.mostrarMensaje("Ingrese el nuevo origen de la ruta: ");
-     origen = objVantana.pedirString();
+     objRuta.setOrigen(objVantana.pedirString());
      objVantana.mostrarMensaje("Ingrese el nuevo destino de la ruta: ");
-     destino = objVantana.pedirString();
+     objRuta.setDestino(objVantana.pedirString());
      objVantana.mostrarMensaje("Ingrese el tiempo estimado de la ruta: ");
-     tiempo = objVantana.pedirEntero();
-     Ruta rutaModificada = new Ruta(nombre, origen, destino, tiempo);
+     objRuta.setTiempoEstimado(objVantana.pedirEntero());
+   //  Ruta rutaModificada = new Ruta(nombre, origen, destino, tiempo);
      boolean modificacion = objEnlazada.modificar(nombre, objRuta);
      if(modificacion){
          objVantana.mostrarMensaje("Ruta Modificada");
@@ -355,7 +381,7 @@ public class Controlador {
      do {
          objVantana.mostrarMensaje(" ");
        objVantana.acceso();
-     op = objVantana.pedirEntero();
+     op = entero();
          switch (op) {
              case 1:
                  ingresar();
@@ -420,6 +446,7 @@ public class Controlador {
  
  public void mostrarEstacionesRutas(){
      for (Estacion estacion : objEstacion.getEstacion()) {
+         objVantana.mostrarMensaje(" ");
          objVantana.mostrarMensaje("Estacion " + estacion.getNombreEstacion());
          objVantana.mostrarMensaje("Rutas conexas: ");
          String conexa = estacion.mostrarRutasConexas();
@@ -430,6 +457,8 @@ public class Controlador {
         }
      }
  }
+
+ 
  
  public void datosPrecargados(){
      
@@ -465,9 +494,11 @@ public class Controlador {
     a1.addListaConexas(r6);
      
      //Datos de Buse precargados
-     Bus b1 = new Bus(23, 200, "P20", "12Pl", "2014", 100);
+     Bus b1 = new Bus(23, 200, null, "12Pl", "2014", 100);
      objDiccionario.agregarBus(b1);
-     Bus b2 = new Bus(12, 250,  "L20", "25Tk", "2017", 110);
+     b1.setRutaAsignada(r2.getNombreRuta());
+     Bus b2 = new Bus(12, 250,  null, "25Tk", "2017", 110);
+     b2.setRutaAsignada(r4.getNombreRuta());
      objDiccionario.agregarBus(b2);
      
      
@@ -477,5 +508,20 @@ public class Controlador {
      Usuario u2 = new Usuario(45, false, "Pasajero");
      objHashTable.agregarUsuario(u2);
  }
+
+  public int entero(){
+      boolean validacion = false;
+      int numero = 0;
+      while (!validacion) {  
+          try{
+           numero = objVantana.pedirEntero();
+          validacion = true;
+          }catch(NumberFormatException e){
+              objVantana.mostrarMensaje("Datos de entrada invalidos. Ingresar entradas validas");
+          }
+      }
+      
+        return numero;
+  }
  
 }

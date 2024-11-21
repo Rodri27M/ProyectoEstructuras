@@ -9,7 +9,7 @@ public class Estacion {
     private String nombreEstacion;
     private int capacidadMaxima;
     private int flujoPersonas;
-    private   ListaEnlazada listaConexas;
+    private ListaEnlazada listaConexas;
     private String saturacion;
     private boolean funcionamiento;
 
@@ -24,10 +24,6 @@ public class Estacion {
         this.saturacion = saturacion;
         this.funcionamiento = funcionamiento;
     }
-
-   
-
-  
 
     public String getNombreEstacion() {
         return nombreEstacion;
@@ -76,7 +72,10 @@ public class Estacion {
     public void setFuncionamiento(boolean funcionamiento) {
         this.funcionamiento = funcionamiento;
     }
-
+      public ListaEnlazada getListaRutasConexas() {
+        return listaConexas; 
+    }
+    
     @Override
     public String toString() {
         return "Estacion{" + "\nnombreEstacion= " + nombreEstacion +
@@ -87,7 +86,21 @@ public class Estacion {
     }
 
     
-    
+   public String mostrarRutasConexas(){
+       String mostrar = " ";
+       Nodo actual = listaConexas.getCabeza();
+       if(actual == null){
+           return "No hay rutas conexas";
+       }
+       while(actual != null){
+           Ruta ruta =(Ruta) actual.getConexa();
+           mostrar += "- Ruta: " + ruta.getNombreRuta() + "| Origen: " + ruta.getOrigen() + " | Destino " + ruta.getDestino();
+           actual = actual.getNext();
+        }
+       
+        return mostrar;
+   } 
+
     
     
     

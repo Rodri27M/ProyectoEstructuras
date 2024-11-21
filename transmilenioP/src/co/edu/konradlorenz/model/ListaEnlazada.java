@@ -30,17 +30,21 @@ public class ListaEnlazada {
     }
     
      public String MostarLista(){
-         String men = null;
+          StringBuilder men = new StringBuilder();
         Nodo actual = cabeza;
         if(cabeza == null){
-            men = "Lista vacia";
-        }else{
+            return "Lista vacia";
+        }
         while (actual!= null){
-             men = actual.getConexa().toString();
+             men.append(actual.getConexa().toString());
+             if(actual.getNext() != null){
+                men.append("\n->");
+             }
             actual = actual.getNext();
         } 
-        }
-        return men;
+        
+        
+        return men.toString();
     }
      
      public void borrar (String nombre){
@@ -93,4 +97,23 @@ public class ListaEnlazada {
     }
     return false; 
 }
+     public void asignarRutasEstaciones(ListaEnlazada objEnlazada, ListaEstacion objEstacion){
+         Nodo actual = cabeza;
+         while(actual != null){
+             Ruta ruta = actual.getConexa();
+             Estacion origen = objEstacion.buscarNombre(ruta.getOrigen());
+             if(origen != null){
+                 origen.addListaConexas(ruta);
+             }
+             Estacion destino = objEstacion.buscarNombre(ruta.getDestino());
+             if (destino != null) {
+                 destino.addListaConexas(ruta);
+             }
+             actual = actual.getNext();
+         }
+     }
+     
+     public Nodo getCabeza(){
+         return cabeza;
+     }
 }

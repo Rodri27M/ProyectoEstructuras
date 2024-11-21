@@ -27,5 +27,14 @@ public class ListaEstacion {
     public void agregar(Estacion agregar){
         estacion.add(agregar);
     }
+    public Estacion buscarNombre(String nombre){
+        for (Estacion estacion : estacion) {
+            if(estacion.getNombreEstacion().equalsIgnoreCase(nombre)){
+                return estacion;
+            }
+        }
+      return null;
+    }
     
+   
 }

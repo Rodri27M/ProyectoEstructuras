@@ -21,9 +21,11 @@ public class Controlador {
     Ruta objRuta = new Ruta();
     ListaEnlazada objEnlazada = new ListaEnlazada();
     public void run(){
+        objVantana.mostrarMensaje(" ");
          datosPrecargados();
         int op;
         do{
+            objVantana.mostrarMensaje(" ");
             objVantana.menu();
             op = objVantana.pedirEntero();
         switch (op) {
@@ -52,13 +54,12 @@ public class Controlador {
                 objVantana.mostrarMensaje("saliendo del Programa");
                 break;
             default:
-                throw new AssertionError("Opcion invalida. Por favor ingresar una de las opciones disponibles");
+                objVantana.mostrarMensaje("Opcion invalida. Por favor, ingresar una de las opciones disponibles.");
         }
         }while (op!=8);           
                
     }
  public void monitoreoEstacion(){
-     datosEstacion();
      objVantana.mostrarMensaje("---MONITOREO EN TIPO REAL---");
      if(objEstacion == null || objEstacion.getEstacion() == null){
          objVantana.mostrarMensaje("No esta inicializada en las listas");
@@ -74,7 +75,8 @@ public class Controlador {
          objVantana.mostrarMensaje("Saturacion: " + estacion.getSaturacion());
          objVantana.mostrarMensaje("Funcionamiento: " + servicio(estacion.isFuncionamiento()));
          objVantana.mostrarMensaje("Paradas de Rutas: " );
-         estacion.getListaConexas();
+         objVantana.mostrarMensaje(" ");
+         mostrarEstacionesRutas();
          objVantana.mostrarMensaje("  ");
 }
      }
@@ -107,10 +109,33 @@ public class Controlador {
  
  public void datosEstacion(){
      // Metodo de agregar datos de la estacion(Se esta validando si se desea agregar los datos precargados)
+     String nombre, saturacion;
+     int capacidad, flujo;
+     ListaEnlazada paradas;
+     boolean servicio;
+     objVantana.mostrarMensaje("Agregando estacion");
+     objVantana.mostrarMensaje("Ingrese el nombre de la estacion");
+     nombre = objVantana.pedirString();
+     objVantana.mostrarMensaje("Ingrese las parradas");
+     paradas = null; // En proceso
+     objVantana.mostrarMensaje("Ingrese la capacidad maxima de la estacion");
+     capacidad = objVantana.pedirEntero();
+     objVantana.mostrarMensaje("Ingrese flujo de personas");
+     flujo = objVantana.pedirEntero();
+     objVantana.mostrarMensaje("Ingresar estado de saturacion");
+     saturacion = objVantana.pedirString();
+     objVantana.mostrarMensaje("Seleccionar una de las siguientes opciones: 1. En servicion o 2. Fuera de servicio");
+     int op = objVantana.pedirEntero();
+     servicio = pedirAutorizacion(op);
+     Estacion agregar = new Estacion(saturacion, capacidad, flujo, paradas, saturacion, servicio);
+     objEstacion.agregar(agregar);
+     
+    
    
  }
  
  public void gestionFlota(){
+     objVantana.mostrarMensaje(" ");
      int op;
      do {  
      objVantana.flota();
@@ -135,14 +160,30 @@ public class Controlador {
                 objVantana.mostrarMensaje("Saliendo de gestionar flota");
                 break;
             default:
-                throw new AssertionError("Opcion Invalida. Por favor, ingresar una de las opciones disponibles");
+                objVantana.mostrarMensaje("Opcion Invalida. Por favor, ingresar una de las opciones disponibles");
      }
      } while (op!=6);
  }
  
  public void agregarBus(){
   //Metodo de pedir datos(Se esta validando si agregar datos precargados)   
-  objVantana.mostrarMensaje("Metodo sin implementacion");
+  String ruta, placa, entrada;
+  int ID, capacidad, asientos;
+  objVantana.mostrarMensaje("---Agregando Bus---");
+  objVantana.mostrarMensaje("Ingrese el ID del bus:");
+  ID = objVantana.pedirEntero();
+  objVantana.mostrarMensaje("Ingrese la placa del bus:");
+  placa = objVantana.pedirString();
+  objVantana.mostrarMensaje("Ingrese el año de entrada del bus;");
+  entrada = objVantana.pedirString();
+  objVantana.mostrarMensaje("Ingrese la capacidad del bus:");
+  capacidad = objVantana.pedirEntero();
+  objVantana.mostrarMensaje("Ingrese el numero de asientos del bus:");
+  asientos = objVantana.pedirEntero();
+  objVantana.mostrarMensaje("Ingrese la ruta asignada del proyecto");
+  ruta = objVantana.pedirString();
+  Bus agregar = new Bus(ID, capacidad, ruta, placa, entrada, asientos);
+  objDiccionario.agregarBus(agregar);
  }
  
  public void retirarBus(){
@@ -160,16 +201,18 @@ public class Controlador {
  }
  
  public void accerderBus(){
-     if(objDiccionario.getBuses() != null){
+     if(objDiccionario.getBuses() == null || objDiccionario.getBuses().isEmpty()){
+           objVantana.mostrarMensaje("Lista de buses vacia");
+       return;
+      }
+
      objVantana.mostrarMensaje("Ingrese el ID para acceder");
      int id = objVantana.pedirEntero();
      Bus bus = objDiccionario.obtenerBus(id);
      if(bus == null){
          objVantana.mostrarMensaje("El bus con ID " + id + " no esta en la lista");
      }else{
-         objDiccionario.obtenerBus(id).toString();
-     }}else{
-         objVantana.mostrarMensaje("La lista de buses esta vacia");
+         objVantana.mostrarMensaje("Informacion del bus: \n" + bus.toString());
      }
  }
  
@@ -207,14 +250,12 @@ public class Controlador {
  }
  }
  
- public void datos(){
-     //Datos de la ruta(puede ir datos precargados)
- }
- 
  public void gentionRutas(){
+     objVantana.mostrarMensaje(" ");
      objVantana.mostrarMensaje("Gestion de Rutas:");
       int op;
-     do {  
+     do { 
+     objVantana.mostrarMensaje(" ");
      objVantana.gentionRutas();
      op = objVantana.pedirEntero();
      switch (op){
@@ -234,7 +275,7 @@ public class Controlador {
                 objVantana.mostrarMensaje("Saliendo de gestion de rutas");
                 break;
             default:
-                throw new AssertionError("Opcion invalidad. Por favor, ingresar una de las opciones disponibles");
+                objVantana.mostrarMensaje("Opcion invalidad. Por favor, ingresar una de las opciones disponibles");
      }
      } while (op!=5);
  }
@@ -291,7 +332,7 @@ public class Controlador {
  
  public void listaRutas(){
      objVantana.mostrarMensaje("Lista Rutas: ");
-     objEnlazada.MostarLista();
+    objVantana.mostrarMensaje(objEnlazada.MostarLista());
  }
  
  public void alertas(){
@@ -309,8 +350,10 @@ public class Controlador {
  }
  
  public void validarAcceso(){
+     objVantana.mostrarMensaje(" ");
      int op;
      do {
+         objVantana.mostrarMensaje(" ");
        objVantana.acceso();
      op = objVantana.pedirEntero();
          switch (op) {
@@ -324,7 +367,7 @@ public class Controlador {
                  objVantana.mostrarMensaje("Saliendo de validar acceso");
                  break;
              default:
-                 throw new AssertionError("Opcion invalidad. Ingrese una de las opciones disponibles");
+               objVantana.mostrarMensaje("Opcion invalidad. Ingrese una de las opciones disponibles");
          }
      } while (op!=3);
  }
@@ -372,26 +415,61 @@ public class Controlador {
          }
      }
      
+     
+ }
+ 
+ public void mostrarEstacionesRutas(){
+     for (Estacion estacion : objEstacion.getEstacion()) {
+         objVantana.mostrarMensaje("Estacion " + estacion.getNombreEstacion());
+         objVantana.mostrarMensaje("Rutas conexas: ");
+         String conexa = estacion.mostrarRutasConexas();
+         if(conexa != null && !conexa.isEmpty()){
+             objVantana.mostrarMensaje(conexa);
+         }else{
+            objVantana.mostrarMensaje("No hay rutas conexas");
+        }
+     }
  }
  
  public void datosPrecargados(){
+     
      //Datos precargados de estacion
      Estacion a1 = new Estacion("Ricaute", 1000, 500,null, "Moderada", true);
-     objEstacion.agregar(a1);
+    objEstacion.agregar(a1);
      Estacion a2 = new Estacion("Terminal", 600, 700,null, "Normal", true);
-     objEstacion.agregar(a2);
+    objEstacion.agregar(a2);
+    Estacion a3 = new Estacion("Sur", 200, 400, null, "Alta", true);
+    objEstacion.agregar(a3);
+    Estacion a4 = new Estacion("Centro", 300, 600, null, "Normal", true);
+    objEstacion.agregar(a4);
+     
+     
+      //Datos de rutas precargados
+     Ruta r1 = new Ruta("P20", "Ricaute", "Sur", 80);
+     objEnlazada.insertFinal(r1);
+     a1.addListaConexas(r1);
+     Ruta r2 = new Ruta("M20", "Sur", "Ricaute", 80);
+     objEnlazada.insertFinal(r2);
+     a2.addListaConexas(r2);
+     Ruta r3 = new Ruta("T30", "Terminal", "Centro", 75);
+    objEnlazada.insertFinal(r3);
+    a3.addListaConexas(r3);
+    Ruta r4 = new Ruta("T40", "Centro", "Terminal", 75);
+    objEnlazada.insertFinal(r4);
+    a4.addListaConexas(r4);
+    Ruta r5 = new Ruta("P10", "Ricaute", "Centro", 90);
+    objEnlazada.insertFinal(r5);
+    a1.addListaConexas(r5);
+    Ruta r6 = new Ruta("P50", "Sur", "Terminal", 70);
+    objEnlazada.insertFinal(r6);
+    a1.addListaConexas(r6);
      
      //Datos de Buse precargados
      Bus b1 = new Bus(23, 200, "P20", "12Pl", "2014", 100);
      objDiccionario.agregarBus(b1);
-     Bus b2 = new Bus(23, 250,  "L20", "25Tk", "2017", 110);
+     Bus b2 = new Bus(12, 250,  "L20", "25Tk", "2017", 110);
      objDiccionario.agregarBus(b2);
      
-     //Datos de rutas precargados
-     Ruta r1 = new Ruta("P20", "Ricaute", "Teminal", 80);
-     objEnlazada.insertFinal(r1);
-     Ruta r2 = new Ruta("L20", "Terminal", "Ricaute", 80);
-     objEnlazada.insertFinal(r2);
      
      //Datos de usuaios precargados
      Usuario u1 = new Usuario(34, true, "Pasajero");

@@ -3,6 +3,7 @@ package co.edu.konradlorenz.controller;
 import co.edu.konradlorenz.model.Bus;
 import co.edu.konradlorenz.model.estructuras.ListaBus;
 import co.edu.konradlorenz.model.Estacion;
+import co.edu.konradlorenz.model.GrafoRutas;
 import co.edu.konradlorenz.model.estructuras.ListaUsuarios;
 import co.edu.konradlorenz.model.ListaRutas;
 import co.edu.konradlorenz.model.estructuras.ListaEstacion;
@@ -19,6 +20,7 @@ public class Controlador {
     ListaUsuarios objHashTable = new ListaUsuarios();
     Bus objBus = new Bus();
     Ruta objRuta = new Ruta();
+    GrafoRutas grafo = new GrafoRutas();
     ListaRutas objEnlazada = new ListaRutas();
     public void run(){
         objVantana.mostrarMensaje(" ");
@@ -40,7 +42,7 @@ public class Controlador {
                 gestionFlota();
                 break;
             case 4:
-                objVantana.mostrarMensaje("Sin implementacion");
+                calcularRutas();
                 break;
             case 5:
                 gentionRutas();
@@ -625,6 +627,12 @@ public class Controlador {
      objHashTable.agregarUsuario(u1);
      Usuario u2 = new Usuario(45, false, "Pasajero");
      objHashTable.agregarUsuario(u2);
+     //Datos precargados del grafo
+     grafo.agregarArista("Eldorado", "Ricaurte");
+     grafo.agregarArista("Ricaurte", "Jimenez");
+     grafo.agregarArista("Jimenez", "Tunal");
+     grafo.agregarArista("Jimenez", "Norte");
+     grafo.agregarArista("Norte", "Terminal");
  }
 
   public int entero(){
@@ -653,6 +661,16 @@ public class Controlador {
         objVantana.mostrarMensaje("Estacion no esta en la lista");
     }
   
+    }
+    
+    public void calcularRutas(){
+        objVantana.calcularRutas();
+        objVantana.mostrarMensaje("Ingrese la estación de inicio:");
+        String inicio = objVantana.pedirString();
+        objVantana.mostrarMensaje("Ingrese la estación de destino: ");
+        String fin = objVantana.pedirString(); objVantana.mostrarMensaje("");
+         objVantana.mostrarMensaje(grafo.mostrarRutaMasCorta(inicio, fin));
+         objVantana.mostrarMensaje(" ");
     }
  
 }

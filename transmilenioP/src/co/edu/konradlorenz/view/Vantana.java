@@ -77,5 +77,12 @@ public class Vantana {
   public String pedirString(){
       return  sc.next();
   }
-    
+  
+  public String pedirStringRutas(){
+      return sc.nextLine();
+  }
+    public void calcularRutas(){
+        System.out.println("=== Sistema de Rutas TRANSMILENIO ===");
+        System.out.println("Estaciones disponibles: Eldorado, Ricaurte, Jimenez, Tunal, Norte, Terminal");
+    }
 }

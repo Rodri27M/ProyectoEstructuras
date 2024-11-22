@@ -142,13 +142,13 @@ public class Controlador {
      objVantana.mostrarMensaje("Ingrese el nombre de la estacion");
      nombre = objVantana.pedirString();
      objVantana.mostrarMensaje("Ingrese la capacidad maxima de la estacion");
-     capacidad = objVantana.pedirEntero();
+     capacidad = entero();
      objVantana.mostrarMensaje("Ingrese flujo de personas");
-     flujo = objVantana.pedirEntero();
+     flujo = entero();
      objVantana.mostrarMensaje("Ingresar estado de saturacion");
      saturacion = objVantana.pedirString();
      objVantana.mostrarMensaje("Seleccionar una de las siguientes opciones: \n1. En servicion \n2. Fuera de servicio");
-     int op = objVantana.pedirEntero();
+     int op = entero();
      servicio = pedirAutorizacion(op);
      Estacion agregar = new Estacion(nombre, capacidad, flujo, null, saturacion, servicio);
      objEstacion.agregar(agregar); 
@@ -261,15 +261,15 @@ public class Controlador {
   int ID, capacidad, asientos;
   objVantana.mostrarMensaje("---Agregando Bus---");
   objVantana.mostrarMensaje("Ingrese el ID del bus:");
-  ID = objVantana.pedirEntero();
+  ID = entero();
   objVantana.mostrarMensaje("Ingrese la placa del bus:");
   placa = objVantana.pedirString();
   objVantana.mostrarMensaje("Ingrese el año de entrada del bus;");
   entrada = objVantana.pedirString();
   objVantana.mostrarMensaje("Ingrese la capacidad del bus:");
-  capacidad = objVantana.pedirEntero();
+  capacidad = entero();
   objVantana.mostrarMensaje("Ingrese el numero de asientos del bus:");
-  asientos = objVantana.pedirEntero();
+  asientos = entero();
   Bus agregar = new Bus(ID, capacidad, null, placa, entrada, asientos);
   objDiccionario.agregarBus(agregar);
  }
@@ -277,7 +277,7 @@ public class Controlador {
  public void retirarBus(){
      if(objDiccionario.getBuses()!= null){
      objVantana.mostrarMensaje("Ingrese el ID del Bus a retirar:");
-     int id = objVantana.pedirEntero();
+     int id = entero();
      Bus bus = objDiccionario.obtenerBus(id);
      if(bus == null){
          objVantana.mostrarMensaje("El bus con ID " + id + " no esta en la lista");
@@ -295,7 +295,7 @@ public class Controlador {
       }
 
      objVantana.mostrarMensaje("Ingrese el ID para acceder");
-     int id = objVantana.pedirEntero();
+     int id = entero();
      Bus bus = objDiccionario.obtenerBus(id);
      if(bus == null){
          objVantana.mostrarMensaje("El bus con ID " + id + " no esta en la lista");
@@ -307,19 +307,19 @@ public class Controlador {
  public void modificarBus(){
      if(objDiccionario.getBuses()!=null){
      objVantana.mostrarMensaje("Ingrese el ID del bus que se va a modificar ");
-     int id = objVantana.pedirEntero();
+     int id = entero();
      Bus bus = objDiccionario.obtenerBus(id);
      if(bus != null){
          objVantana.mostrarMensaje("Ingrese la placa: ");
          bus.setPlaca(objVantana.pedirString());
          objVantana.mostrarMensaje("Ingrese la capacidad del bus: ");
-         bus.setCapacidad(objVantana.pedirEntero());
+         bus.setCapacidad(entero());
           objVantana.mostrarMensaje("Ingrese la ruta del bus: ");
          bus.setRutaAsignada(objVantana.pedirString());
          objVantana.mostrarMensaje("Ingrese el año del bus: ");
          bus.setAñoEntrada(objVantana.pedirString());
           objVantana.mostrarMensaje("Ingrese el numero de asientos del bus");
-         bus.setNumAsientos(objVantana.pedirEntero());
+         bus.setNumAsientos(entero());
      }else{
          objVantana.mostrarMensaje("El bus con ID " + id + " no esta en la lista");
      }}else{
@@ -330,7 +330,7 @@ public class Controlador {
  public void asignarRuta(){
      objVantana.mostrarMensaje("---Asignado Ruta---");
      objVantana.mostrarMensaje("Ingrese el ID del Bus");
-     int id = objVantana.pedirEntero();
+     int id = entero();
      Bus bus = objDiccionario.obtenerBus(id);
        if( bus !=null){
            listaRutas();
@@ -402,7 +402,7 @@ public class Controlador {
      objVantana.mostrarMensaje("Ingrese el destino de la ruta");
      destino = objVantana.pedirString();
      objVantana.mostrarMensaje("Ingrese el tiempo estimado de la ruta");
-     tiempo = objVantana.pedirEntero();
+     tiempo = entero();
      Ruta objRuta = new Ruta(nombre, origen, destino, tiempo);
      objEnlazada.insertFinal(objRuta);
      
@@ -429,7 +429,7 @@ public class Controlador {
      objVantana.mostrarMensaje("Ingrese el nuevo destino de la ruta: ");
      objRuta.setDestino(objVantana.pedirString());
      objVantana.mostrarMensaje("Ingrese el tiempo estimado de la ruta: ");
-     objRuta.setTiempoEstimado(objVantana.pedirEntero());
+     objRuta.setTiempoEstimado(entero());
    //  Ruta rutaModificada = new Ruta(nombre, origen, destino, tiempo);
      boolean modificacion = objEnlazada.modificar(nombre, objRuta);
      if(modificacion){
@@ -488,9 +488,9 @@ public class Controlador {
  public void ingresar(){
      objVantana.mostrarMensaje("--Ingresando Usuariuo--");
      objVantana.mostrarMensaje("Ingrese el ID del usuario");
-     int id = objVantana.pedirEntero();
+     int id = entero();
      objVantana.mostrarMensaje("Ingrese acceso: 1.Autorizado o 2.Denegado");
-     int op = objVantana.pedirEntero();
+     int op = entero();
      boolean autorizacion = pedirAutorizacion(op);
      objVantana.mostrarMensaje("Ingrese el tipo de Usuario");
      String tipo = objVantana.pedirString();
@@ -517,7 +517,7 @@ public class Controlador {
  public void validar(){
      objVantana.mostrarMensaje("--Validando acceso--");
      objVantana.mostrarMensaje("Ingrese ID del usuario");
-     int id = objVantana.pedirEntero();
+     int id = entero();
      if(objHashTable.getUsuarios().isEmpty()){
          objVantana.mostrarMensaje("Lista vacia");
      }else{
@@ -583,14 +583,19 @@ public class Controlador {
  public void datosPrecargados(){
      
      //Datos precargados de estacion
-     Estacion a1 = new Estacion("Ricaute", 1000, 500,null, "Moderada", true);
+     Estacion a1 = new Estacion("Ricaurte", 1000, 500,null, "Moderada", true);
     objEstacion.agregar(a1);
      Estacion a2 = new Estacion("Terminal", 600, 700,null, "Normal", true);
     objEstacion.agregar(a2);
-    Estacion a3 = new Estacion("Sur", 200, 400, null, "Alta", true);
+    Estacion a3 = new Estacion("Tunal", 200, 400, null, "Alta", true);
     objEstacion.agregar(a3);
-    Estacion a4 = new Estacion("Centro", 300, 600, null, "Normal", true);
+    Estacion a4 = new Estacion("ElDorado", 300, 600, null, "Normal", true);
     objEstacion.agregar(a4);
+    Estacion a5 = new Estacion("Norte", 150, 200, null, "Saturada", true);
+    objEstacion.agregar(a5);
+    Estacion a6 = new Estacion("Jimenez", 400, 200, null, "Normal", true);
+    objEstacion.agregar(a6);
+    
      
      
       //Datos de rutas precargados

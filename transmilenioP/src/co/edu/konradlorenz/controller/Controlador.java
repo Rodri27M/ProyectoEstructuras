@@ -34,24 +34,27 @@ public class Controlador {
                 monitoreo();
                 break;
             case 2:
-                gestionFlota();
+                gestionEstacion();
                 break;
             case 3:
-                objVantana.mostrarMensaje("Sin implementacion");
+                gestionFlota();
                 break;
             case 4:
-                gentionRutas();
+                objVantana.mostrarMensaje("Sin implementacion");
                 break;
             case 5:
-                validarAcceso();
+                gentionRutas();
                 break;
             case 6:
+                validarAcceso();
+                break;
+            case 7:
                 objVantana.mostrarMensaje("saliendo del Programa");
                 break;
             default:
                 objVantana.mostrarMensaje("Opcion invalida. Por favor, ingresar una de las opciones disponibles.");
         }
-        }while (op!=6);           
+        }while (op!=7);           
                
     }
  public void monitoreoEstacion(){
@@ -87,9 +90,9 @@ public class Controlador {
      return servicio;
  }
  
- public void pedirBoolean(){
+ public boolean pedirBoolean(int op){
      boolean funcionamiento = false;
-     int op = objVantana.pedirEntero();
+     
      do{
      if (op==1) {
          funcionamiento = true;
@@ -97,9 +100,36 @@ public class Controlador {
          funcionamiento = false;
      }  
      }while(op!=1 || op!=2);
-     objEstacion1.setFuncionamiento(funcionamiento);
+    return  funcionamiento;
  }
  
+ public void gestionEstacion(){
+     int op;
+     do {  
+        objVantana.gestionEstacion();
+        op = entero();
+         switch (op) {
+             case 1:
+                 datosEstacion();
+                 break;
+             case 2:
+                 eliminarEstacion();
+                 break;
+             case 3:
+                 modificarEstacion();
+                 break;
+             case 4:
+                 asignarParada();
+                 break;
+             case 5:
+                 objVantana.mostrarMensaje("Saliendo del programa");
+                 break;
+             default:
+                objVantana.mostrarMensaje("Ingresar una de las opciones disponibles");
+         }
+         
+     } while (op!=5);
+ }
  public void datosEstacion(){
      // Metodo de agregar datos de la estacion(Se esta validando si se desea agregar los datos precargados)
      String nombre, saturacion;
@@ -109,24 +139,85 @@ public class Controlador {
      objVantana.mostrarMensaje("--Agregando estacion--");
      objVantana.mostrarMensaje("Ingrese el nombre de la estacion");
      nombre = objVantana.pedirString();
-     objVantana.mostrarMensaje("Ingrese las paradas");
-     paradas = null; // En proceso
      objVantana.mostrarMensaje("Ingrese la capacidad maxima de la estacion");
      capacidad = objVantana.pedirEntero();
      objVantana.mostrarMensaje("Ingrese flujo de personas");
      flujo = objVantana.pedirEntero();
      objVantana.mostrarMensaje("Ingresar estado de saturacion");
      saturacion = objVantana.pedirString();
-     objVantana.mostrarMensaje("Seleccionar una de las siguientes opciones: 1. En servicion o 2. Fuera de servicio");
+     objVantana.mostrarMensaje("Seleccionar una de las siguientes opciones: \n1. En servicion \n2. Fuera de servicio");
      int op = objVantana.pedirEntero();
      servicio = pedirAutorizacion(op);
-     Estacion agregar = new Estacion(saturacion, capacidad, flujo, paradas, saturacion, servicio);
-     objEstacion.agregar(agregar);
-     
-    
-   
+     Estacion agregar = new Estacion(nombre, capacidad, flujo, null, saturacion, servicio);
+     objEstacion.agregar(agregar); 
  }
  
+ public void eliminarEstacion(){
+     if(objEstacion!= null){
+     objVantana.mostrarMensaje("Ingrese el nombre de la estacion a eliminar:");
+     String nombre = objVantana.pedirString();
+     Estacion estacion = objEstacion.buscarNombre(nombre);
+     if(estacion == null){
+         objVantana.mostrarMensaje("La estacio " + nombre + " no esta en la lista");
+     }else{  
+       objEstacion.eliminar(nombre);
+     }}else{
+         objVantana.mostrarMensaje("Lista de estaciones vacia");
+     }
+ }
+  public void modificarEstacion(){
+     if(objEstacion.getEstacion()!=null){
+     objVantana.mostrarMensaje("Ingrese el nombre de la estacion a modificar ");
+     String nombre = objVantana.pedirString();
+     Estacion estacion = objEstacion.buscarNombre(nombre);
+     if(estacion != null){
+         objVantana.mostrarMensaje("Ingrese la capacidad Maxima ");
+         estacion.setCapacidadMaxima(entero());
+         objVantana.mostrarMensaje("Ingrese saturacion");
+         estacion.setSaturacion(objVantana.pedirString());
+          objVantana.mostrarMensaje("Ingresel el funcionamiendo de la estacion. 1. En servicio o 2. Fuera de Servicio");
+          boolean servicio = pedirBoolean(entero());
+         estacion.setFuncionamiento(servicio);
+         objVantana.mostrarMensaje("Ingrese el año del bus: ");
+         
+     }else{
+         objVantana.mostrarMensaje("Estacion" + nombre + " no esta en la lista");
+     }}else{
+         objVantana.mostrarMensaje("No hay estaciones en la lista");
+     }
+ }
+ 
+ public void listaEstaciones(){
+     objVantana.mostrarMensaje("---Lista Estaciones---");
+     for (Estacion estacion : objEstacion.getEstacion()) {
+         objVantana.mostrarMensaje("Estacion: " + estacion.getNombreEstacion());
+     }
+ }
+ 
+ public void asignarParada(){
+     objVantana.mostrarMensaje("-ASIGNADO RUTA-");
+     objVantana.mostrarMensaje("Ingrese el nombre de la Estacion");
+     String nombre = objVantana.pedirString();
+     Estacion estacion = objEstacion.buscarNombre(nombre);
+     if(estacion!=null){
+         listaRutas();
+      objVantana.mostrarMensaje("Ingrese el nombre de la ruta");
+      String rutaNombre = objVantana.pedirString();
+      Ruta ruta = objEnlazada.buscarRuta(rutaNombre);
+     if(ruta!=null){
+         estacion.addListaConexas(ruta);
+         objVantana.mostrarMensaje("Se agrego correctamente");
+     }else{
+         objVantana.mostrarMensaje("La ruta " + rutaNombre + " no esta en la lista");
+     }
+              
+     }else{
+         objVantana.mostrarMensaje("La estacion " + nombre + " no esta en la lista");
+     }
+     
+ }
+ 
+
  public void gestionFlota(){
      objVantana.mostrarMensaje(" ");
      int op;
@@ -359,9 +450,9 @@ public class Controlador {
      if(objEstacion.getEstacion()!=null){
      for (Estacion estacion : objEstacion.getEstacion()) {
          if(estacion.getFlujoPersonas() > estacion.getCapacidadMaxima()){
-             objVantana.mostrarMensaje("Estacion: " + estacion.getNombreEstacion() + " Estacion llena");
+             objVantana.mostrarMensaje("Estacion: " + estacion.getNombreEstacion() + ":" + " Estacion llena");
          }else{
-             objVantana.mostrarMensaje("Estacion: " +estacion.getNombreEstacion() +" Sin anomalias");
+             objVantana.mostrarMensaje("Estacion: " +estacion.getNombreEstacion() + ": " +" Sin anomalias");
          }
      }}else{
             objVantana.mostrarMensaje("No hay estaciones");
@@ -468,12 +559,15 @@ public class Controlador {
                  alertas();
                  break; 
              case 3:
-                 mostrarEstacionesRutas();
+                 listaEstaciones();
                  break;
              case 4:
+                 mostrarEstacionesRutas();
+                 break;
+             case 5:
                  monitoreoEstacion();
                  break;  
-             case 5:
+             case 6:
                  objVantana.mostrarMensaje("Saliendo del programa");
                  break;
              default:
@@ -481,7 +575,7 @@ public class Controlador {
          }
     
          
-     } while(op!=5);
+     } while(op!=6);
  }
  
  public void datosPrecargados(){
@@ -549,7 +643,16 @@ public class Controlador {
   }
 
     private void registrarCantidad() {
-  objVantana.mostrarMensaje("Metodo sin implementacion");
+        objVantana.mostrarMensaje("--ACTUALIZAR CANTIDAD DE PERSONAS");
+    objVantana.mostrarMensaje("Ingrese Nombre de la Estacion ");
+    Estacion estacion = objEstacion.buscarNombre(objVantana.pedirString());
+    if(estacion != null){
+        objVantana.mostrarMensaje("Ingrese la cantidad de personas en la estacion");
+        estacion.setFlujoPersonas(entero());
+    }else{
+        objVantana.mostrarMensaje("Estacion no esta en la lista");
+    }
+  
     }
  
 }

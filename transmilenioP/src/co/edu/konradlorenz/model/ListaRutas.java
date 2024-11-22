@@ -86,6 +86,22 @@ public class ListaRutas {
 }
     return null; 
      }
+   
+      public Ruta buscarRuta(String nombre) {
+    NodoRutas actual = cabeza;
+    if(cabeza == null){
+        System.out.println("Lista vacia");
+    }else{
+    while (actual != null) {
+        if (actual.getConexa().getNombreRuta().equals(nombre)) {
+            return actual.getConexa(); 
+        }
+        actual = actual.getNext();
+}
+   
+}
+    return null; 
+     }
      
  
      public boolean modificar(String nombre, Ruta nuevaRuta) {

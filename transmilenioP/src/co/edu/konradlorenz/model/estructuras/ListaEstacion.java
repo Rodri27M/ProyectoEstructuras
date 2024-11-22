@@ -28,6 +28,11 @@ public class ListaEstacion {
     public void agregar(Estacion agregar){
         estacion.add(agregar);
     }
+   
+    public void eliminar(String nombre){
+        estacion.remove(nombre);
+    }
+   
     public Estacion buscarNombre(String nombre){
         for (Estacion estacion : estacion) {
             if(estacion.getNombreEstacion().equalsIgnoreCase(nombre)){

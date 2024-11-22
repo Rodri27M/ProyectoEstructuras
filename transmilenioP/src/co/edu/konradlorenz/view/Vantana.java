@@ -13,20 +13,22 @@ public class Vantana {
     }
     public void menu(){
         System.out.println("1. Monitoreo"
-                + "\n2. Gestion de Flota"
-                + "\n3. Calcular rutas"//Grafos(En evaulacion)
-                + "\n4. Gestion de rutas"
-                + "\n5. Validar acceso"
-                + "\n6. salir ");
+                + "\n2. Gestion Estacion"
+                + "\n3. Gestion de Flota"
+                + "\n4. Calcular rutas"//Grafos(En evaulacion)
+                + "\n5. Gestion de rutas"
+                + "\n6. Validar acceso"
+                + "\n7. salir ");
     }
    
     
       public void monitoreo(){
-        System.out.println("1. Registar cantidad de personas"
+        System.out.println("1. Registrar  cantidad de personas"
                 + "\n2. Ver alertas"
-                + "\n3. Ver paradas por Estacion"
-                + "\n4. Estado de las Estaciones "
-                + "\n5. Salir");
+                + "\n3. Ver lista de estaciones"
+                + "\n4. Ver paradas por Estacion"
+                + "\n5. Estado de las Estaciones "
+                + "\n6. Salir");
     }
     
     public void flota(){
@@ -37,6 +39,15 @@ public class Vantana {
                 + "\n5. Asignar Ruta"
                 + "\n6. Lista de Buses"
                 + "\n7. salir");
+    }
+    
+    public void gestionEstacion(){
+        System.out.println("--GESTION DE ESTACIONES--");
+        System.out.println("1. Agregar estacion"
+                + "\n2. Eliminar Estacion"
+                + "\n3. Modificar Estacion"
+                + "\n4. Asignar Parada"
+                + "\n5. Salir");
     }
     
    public int pedirEntero(){

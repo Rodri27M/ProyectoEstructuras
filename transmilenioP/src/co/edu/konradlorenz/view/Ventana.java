@@ -4,13 +4,14 @@ package co.edu.konradlorenz.view;
 import java.util.Scanner;
 
 
-public class Vantana {
-    Scanner sc = new Scanner(System.in);
+public class Ventana {
+    private Scanner sc = new Scanner(System.in);
     
     
     public void mostrarMensaje(String mensaje){
         System.out.println(mensaje);
     }
+    
     public void menu(){
         System.out.println("1. Monitoreo"
                 + "\n2. Gestion Estacion"

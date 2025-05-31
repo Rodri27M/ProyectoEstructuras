@@ -1,18 +1,14 @@
- 
 package co.edu.konradlorenz.controller;
-import co.edu.konradlorenz.model.Bus;
-import co.edu.konradlorenz.model.estructuras.ListaBus;
-import co.edu.konradlorenz.model.Estacion;
-import co.edu.konradlorenz.model.GrafoRutas;
-import co.edu.konradlorenz.model.estructuras.ListaUsuarios;
-import co.edu.konradlorenz.model.ListaRutas;
-import co.edu.konradlorenz.model.estructuras.ListaEstacion;
-import co.edu.konradlorenz.model.Ruta;
-import co.edu.konradlorenz.model.Usuario;
-import co.edu.konradlorenz.view.Vantana;
+import co.edu.konradlorenz.model.estructuras.*;
+import co.edu.konradlorenz.model.*;
+import co.edu.konradlorenz.view.*;
 
 public class Controlador {
-    Vantana objVantana = new Vantana();
+
+    Home home;
+    Principal principal;
+    
+    Ventana objVantana = new Ventana();
     ListaEstacion objEstacion = new ListaEstacion();
     Estacion objEstacion1 = new Estacion();
     ListaBus objDiccionario = new ListaBus();
@@ -23,6 +19,14 @@ public class Controlador {
     GrafoRutas grafo = new GrafoRutas();
     ListaRutas objEnlazada = new ListaRutas();
     public void run(){
+        
+//        home = new Home();
+//        home.setVisible(true);
+//        home.setLocationRelativeTo(null);
+        principal = new Principal();
+        principal.setVisible(true);
+        principal.setLocationRelativeTo(null);
+        
         objVantana.mostrarMensaje(" ");
          datosPrecargados();
         int op;

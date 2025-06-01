@@ -1,17 +1,592 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package co.edu.konradlorenz.view;
 
-/**
- *
- * @author bsvar
- */
+import co.edu.konradlorenz.controller.Controlador;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+
 public class Principal extends javax.swing.JFrame {
 
-    public Principal() {
+    Controlador ctrl;
+    
+    public Principal(Controlador ctrl) {
+        this.ctrl = ctrl;
         initComponents();
+    }
+
+    public JPanel getHomeCardLayout1() {
+        return HomeCardLayout1;
+    }
+
+    public void setHomeCardLayout1(JPanel HomeCardLayout1) {
+        this.HomeCardLayout1 = HomeCardLayout1;
+    }
+
+    public JPanel getHomeCardLayout2() {
+        return HomeCardLayout2;
+    }
+
+    public void setHomeCardLayout2(JPanel HomeCardLayout2) {
+        this.HomeCardLayout2 = HomeCardLayout2;
+    }
+
+    public JButton getBtnAccederBus() {
+        return btnAccederBus;
+    }
+
+    public void setBtnAccederBus(JButton btnAccederBus) {
+        this.btnAccederBus = btnAccederBus;
+    }
+
+    public JButton getBtnAgregarBus() {
+        return btnAgregarBus;
+    }
+
+    public void setBtnAgregarBus(JButton btnAgregarBus) {
+        this.btnAgregarBus = btnAgregarBus;
+    }
+
+    public JButton getBtnAgregarEstacion() {
+        return btnAgregarEstacion;
+    }
+
+    public void setBtnAgregarEstacion(JButton btnAgregarEstacion) {
+        this.btnAgregarEstacion = btnAgregarEstacion;
+    }
+
+    public JButton getBtnAgregarRuta() {
+        return btnAgregarRuta;
+    }
+
+    public void setBtnAgregarRuta(JButton btnAgregarRuta) {
+        this.btnAgregarRuta = btnAgregarRuta;
+    }
+
+    public JButton getBtnAsignarParada() {
+        return btnAsignarParada;
+    }
+
+    public void setBtnAsignarParada(JButton btnAsignarParada) {
+        this.btnAsignarParada = btnAsignarParada;
+    }
+
+    public JButton getBtnAsignarRutaGestionFlota() {
+        return btnAsignarRutaGestionFlota;
+    }
+
+    public void setBtnAsignarRutaGestionFlota(JButton btnAsignarRutaGestionFlota) {
+        this.btnAsignarRutaGestionFlota = btnAsignarRutaGestionFlota;
+    }
+
+    public JButton getBtnAsignarRutaGestionRuta() {
+        return btnAsignarRutaGestionRuta;
+    }
+
+    public void setBtnAsignarRutaGestionRuta(JButton btnAsignarRutaGestionRuta) {
+        this.btnAsignarRutaGestionRuta = btnAsignarRutaGestionRuta;
+    }
+
+    public JButton getBtnCalcularRutaYDistancia() {
+        return btnCalcularRutaYDistancia;
+    }
+
+    public void setBtnCalcularRutaYDistancia(JButton btnCalcularRutaYDistancia) {
+        this.btnCalcularRutaYDistancia = btnCalcularRutaYDistancia;
+    }
+
+    public JButton getBtnCalcularRutas() {
+        return btnCalcularRutas;
+    }
+
+    public void setBtnCalcularRutas(JButton btnCalcularRutas) {
+        this.btnCalcularRutas = btnCalcularRutas;
+    }
+
+    public JButton getBtnEliminarEstacion() {
+        return btnEliminarEstacion;
+    }
+
+    public void setBtnEliminarEstacion(JButton btnEliminarEstacion) {
+        this.btnEliminarEstacion = btnEliminarEstacion;
+    }
+
+    public JButton getBtnEliminarRuta() {
+        return btnEliminarRuta;
+    }
+
+    public void setBtnEliminarRuta(JButton btnEliminarRuta) {
+        this.btnEliminarRuta = btnEliminarRuta;
+    }
+
+    public JButton getBtnGestionEstacion() {
+        return btnGestionEstacion;
+    }
+
+    public void setBtnGestionEstacion(JButton btnGestionEstacion) {
+        this.btnGestionEstacion = btnGestionEstacion;
+    }
+
+    public JButton getBtnGestionFlota() {
+        return btnGestionFlota;
+    }
+
+    public void setBtnGestionFlota(JButton btnGestionFlota) {
+        this.btnGestionFlota = btnGestionFlota;
+    }
+
+    public JButton getBtnGestionRutas() {
+        return btnGestionRutas;
+    }
+
+    public void setBtnGestionRutas(JButton btnGestionRutas) {
+        this.btnGestionRutas = btnGestionRutas;
+    }
+
+    public JButton getBtnIniciarSesion() {
+        return btnIniciarSesion;
+    }
+
+    public void setBtnIniciarSesion(JButton btnIniciarSesion) {
+        this.btnIniciarSesion = btnIniciarSesion;
+    }
+
+    public JButton getBtnModificarBus() {
+        return btnModificarBus;
+    }
+
+    public void setBtnModificarBus(JButton btnModificarBus) {
+        this.btnModificarBus = btnModificarBus;
+    }
+
+    public JButton getBtnModificarEstacion() {
+        return btnModificarEstacion;
+    }
+
+    public void setBtnModificarEstacion(JButton btnModificarEstacion) {
+        this.btnModificarEstacion = btnModificarEstacion;
+    }
+
+    public JButton getBtnModificarRuta() {
+        return btnModificarRuta;
+    }
+
+    public void setBtnModificarRuta(JButton btnModificarRuta) {
+        this.btnModificarRuta = btnModificarRuta;
+    }
+
+    public JButton getBtnMonitoreo() {
+        return btnMonitoreo;
+    }
+
+    public void setBtnMonitoreo(JButton btnMonitoreo) {
+        this.btnMonitoreo = btnMonitoreo;
+    }
+
+    public JButton getBtnMostrarListaBuses() {
+        return btnMostrarListaBuses;
+    }
+
+    public void setBtnMostrarListaBuses(JButton btnMostrarListaBuses) {
+        this.btnMostrarListaBuses = btnMostrarListaBuses;
+    }
+
+    public JButton getBtnMostrarListaRutas() {
+        return btnMostrarListaRutas;
+    }
+
+    public void setBtnMostrarListaRutas(JButton btnMostrarListaRutas) {
+        this.btnMostrarListaRutas = btnMostrarListaRutas;
+    }
+
+    public JButton getBtnRegistrarNumeroPersonas() {
+        return btnRegistrarNumeroPersonas;
+    }
+
+    public void setBtnRegistrarNumeroPersonas(JButton btnRegistrarNumeroPersonas) {
+        this.btnRegistrarNumeroPersonas = btnRegistrarNumeroPersonas;
+    }
+
+    public JButton getBtnRegistrarPersonas() {
+        return btnRegistrarPersonas;
+    }
+
+    public void setBtnRegistrarPersonas(JButton btnRegistrarPersonas) {
+        this.btnRegistrarPersonas = btnRegistrarPersonas;
+    }
+
+    public JButton getBtnRegistrarse() {
+        return btnRegistrarse;
+    }
+
+    public void setBtnRegistrarse(JButton btnRegistrarse) {
+        this.btnRegistrarse = btnRegistrarse;
+    }
+
+    public JButton getBtnRetirarBus() {
+        return btnRetirarBus;
+    }
+
+    public void setBtnRetirarBus(JButton btnRetirarBus) {
+        this.btnRetirarBus = btnRetirarBus;
+    }
+
+    public JButton getBtnSalir() {
+        return btnSalir;
+    }
+
+    public void setBtnSalir(JButton btnSalir) {
+        this.btnSalir = btnSalir;
+    }
+
+    public JButton getBtnValidarAcceso() {
+        return btnValidarAcceso;
+    }
+
+    public void setBtnValidarAcceso(JButton btnValidarAcceso) {
+        this.btnValidarAcceso = btnValidarAcceso;
+    }
+
+    public JButton getBtnVerAlertas() {
+        return btnVerAlertas;
+    }
+
+    public void setBtnVerAlertas(JButton btnVerAlertas) {
+        this.btnVerAlertas = btnVerAlertas;
+    }
+
+    public JButton getBtnVerEstadoDeEstaciones() {
+        return btnVerEstadoDeEstaciones;
+    }
+
+    public void setBtnVerEstadoDeEstaciones(JButton btnVerEstadoDeEstaciones) {
+        this.btnVerEstadoDeEstaciones = btnVerEstadoDeEstaciones;
+    }
+
+    public JButton getBtnVerListaEstaciones() {
+        return btnVerListaEstaciones;
+    }
+
+    public void setBtnVerListaEstaciones(JButton btnVerListaEstaciones) {
+        this.btnVerListaEstaciones = btnVerListaEstaciones;
+    }
+
+    public JButton getBtnVerParadasPorEstacion() {
+        return btnVerParadasPorEstacion;
+    }
+
+    public void setBtnVerParadasPorEstacion(JButton btnVerParadasPorEstacion) {
+        this.btnVerParadasPorEstacion = btnVerParadasPorEstacion;
+    }
+
+    public JLabel getImgTM128() {
+        return imgTM128;
+    }
+
+    public void setImgTM128(JLabel imgTM128) {
+        this.imgTM128 = imgTM128;
+    }
+
+    public JLabel getjLabel1() {
+        return jLabel1;
+    }
+
+    public void setjLabel1(JLabel jLabel1) {
+        this.jLabel1 = jLabel1;
+    }
+
+    public JLabel getjLabel2() {
+        return jLabel2;
+    }
+
+    public void setjLabel2(JLabel jLabel2) {
+        this.jLabel2 = jLabel2;
+    }
+
+    public JLabel getjLabel3() {
+        return jLabel3;
+    }
+
+    public void setjLabel3(JLabel jLabel3) {
+        this.jLabel3 = jLabel3;
+    }
+
+    public JLabel getjLabel4() {
+        return jLabel4;
+    }
+
+    public void setjLabel4(JLabel jLabel4) {
+        this.jLabel4 = jLabel4;
+    }
+
+    public JLabel getjLabel5() {
+        return jLabel5;
+    }
+
+    public void setjLabel5(JLabel jLabel5) {
+        this.jLabel5 = jLabel5;
+    }
+
+    public JLabel getjLabel6() {
+        return jLabel6;
+    }
+
+    public void setjLabel6(JLabel jLabel6) {
+        this.jLabel6 = jLabel6;
+    }
+
+    public JLabel getjLabel7() {
+        return jLabel7;
+    }
+
+    public void setjLabel7(JLabel jLabel7) {
+        this.jLabel7 = jLabel7;
+    }
+
+    public JList<String> getjList1() {
+        return jList1;
+    }
+
+    public void setjList1(JList<String> jList1) {
+        this.jList1 = jList1;
+    }
+
+    public JScrollPane getjScrollPane1() {
+        return jScrollPane1;
+    }
+
+    public void setjScrollPane1(JScrollPane jScrollPane1) {
+        this.jScrollPane1 = jScrollPane1;
+    }
+
+    public JScrollPane getjScrollPane2() {
+        return jScrollPane2;
+    }
+
+    public void setjScrollPane2(JScrollPane jScrollPane2) {
+        this.jScrollPane2 = jScrollPane2;
+    }
+
+    public JList<String> getLstListEstaciones() {
+        return lstListEstaciones;
+    }
+
+    public void setLstListEstaciones(JList<String> lstListEstaciones) {
+        this.lstListEstaciones = lstListEstaciones;
+    }
+
+    public void setListaEstaciones(String[] nombres) {
+        lstListEstaciones.setListData(nombres);
+    }
+
+    public JPanel getPnlBlank1() {
+        return pnlBlank1;
+    }
+
+    public void setPnlBlank1(JPanel pnlBlank1) {
+        this.pnlBlank1 = pnlBlank1;
+    }
+
+    public JPanel getPnlBlank2() {
+        return pnlBlank2;
+    }
+
+    public void setPnlBlank2(JPanel pnlBlank2) {
+        this.pnlBlank2 = pnlBlank2;
+    }
+
+    public JPanel getPnlBotones() {
+        return pnlBotones;
+    }
+
+    public void setPnlBotones(JPanel pnlBotones) {
+        this.pnlBotones = pnlBotones;
+    }
+
+    public JPanel getPnlBotones1() {
+        return pnlBotones1;
+    }
+
+    public void setPnlBotones1(JPanel pnlBotones1) {
+        this.pnlBotones1 = pnlBotones1;
+    }
+
+    public JPanel getPnlBotones2() {
+        return pnlBotones2;
+    }
+
+    public void setPnlBotones2(JPanel pnlBotones2) {
+        this.pnlBotones2 = pnlBotones2;
+    }
+
+    public JPanel getPnlBotones3() {
+        return pnlBotones3;
+    }
+
+    public void setPnlBotones3(JPanel pnlBotones3) {
+        this.pnlBotones3 = pnlBotones3;
+    }
+
+    public JPanel getPnlBotones4() {
+        return pnlBotones4;
+    }
+
+    public void setPnlBotones4(JPanel pnlBotones4) {
+        this.pnlBotones4 = pnlBotones4;
+    }
+
+    public JPanel getPnlBotones5() {
+        return pnlBotones5;
+    }
+
+    public void setPnlBotones5(JPanel pnlBotones5) {
+        this.pnlBotones5 = pnlBotones5;
+    }
+
+    public JPanel getPnlBotones6() {
+        return pnlBotones6;
+    }
+
+    public void setPnlBotones6(JPanel pnlBotones6) {
+        this.pnlBotones6 = pnlBotones6;
+    }
+
+    public JPanel getPnlCalcularRutas1() {
+        return pnlCalcularRutas1;
+    }
+
+    public void setPnlCalcularRutas1(JPanel pnlCalcularRutas1) {
+        this.pnlCalcularRutas1 = pnlCalcularRutas1;
+    }
+
+    public JPanel getPnlCalcularRutas2() {
+        return pnlCalcularRutas2;
+    }
+
+    public void setPnlCalcularRutas2(JPanel pnlCalcularRutas2) {
+        this.pnlCalcularRutas2 = pnlCalcularRutas2;
+    }
+
+    public JPanel getPnlGeneral() {
+        return pnlGeneral;
+    }
+
+    public void setPnlGeneral(JPanel pnlGeneral) {
+        this.pnlGeneral = pnlGeneral;
+    }
+
+    public JPanel getPnlGestionEstacion1() {
+        return pnlGestionEstacion1;
+    }
+
+    public void setPnlGestionEstacion1(JPanel pnlGestionEstacion1) {
+        this.pnlGestionEstacion1 = pnlGestionEstacion1;
+    }
+
+    public JPanel getPnlGestionFlota1() {
+        return pnlGestionFlota1;
+    }
+
+    public void setPnlGestionFlota1(JPanel pnlGestionFlota1) {
+        this.pnlGestionFlota1 = pnlGestionFlota1;
+    }
+
+    public JPanel getPnlGestionFlota2() {
+        return pnlGestionFlota2;
+    }
+
+    public void setPnlGestionFlota2(JPanel pnlGestionFlota2) {
+        this.pnlGestionFlota2 = pnlGestionFlota2;
+    }
+
+    public JPanel getPnlGestionRutas1() {
+        return pnlGestionRutas1;
+    }
+
+    public void setPnlGestionRutas1(JPanel pnlGestionRutas1) {
+        this.pnlGestionRutas1 = pnlGestionRutas1;
+    }
+
+    public JPanel getPnlGestionRutas2() {
+        return pnlGestionRutas2;
+    }
+
+    public void setPnlGestionRutas2(JPanel pnlGestionRutas2) {
+        this.pnlGestionRutas2 = pnlGestionRutas2;
+    }
+
+    public JPanel getPnlMenuIzquierda() {
+        return pnlMenuIzquierda;
+    }
+
+    public void setPnlMenuIzquierda(JPanel pnlMenuIzquierda) {
+        this.pnlMenuIzquierda = pnlMenuIzquierda;
+    }
+
+    public JPanel getPnlMonitoreo1() {
+        return pnlMonitoreo1;
+    }
+
+    public void setPnlMonitoreo1(JPanel pnlMonitoreo1) {
+        this.pnlMonitoreo1 = pnlMonitoreo1;
+    }
+
+    public JPanel getPnlRegistrarNumPersonas() {
+        return pnlRegistrarNumPersonas;
+    }
+
+    public void setPnlRegistrarNumPersonas(JPanel pnlRegistrarNumPersonas) {
+        this.pnlRegistrarNumPersonas = pnlRegistrarNumPersonas;
+    }
+
+    public JPanel getPnlValidarAcceso1() {
+        return pnlValidarAcceso1;
+    }
+
+    public void setPnlValidarAcceso1(JPanel pnlValidarAcceso1) {
+        this.pnlValidarAcceso1 = pnlValidarAcceso1;
+    }
+
+    public JPanel getPnlValidarAcceso2() {
+        return pnlValidarAcceso2;
+    }
+
+    public void setPnlValidarAcceso2(JPanel pnlValidarAcceso2) {
+        this.pnlValidarAcceso2 = pnlValidarAcceso2;
+    }
+
+    public JPanel getPnlVerAlertas() {
+        return pnlVerAlertas;
+    }
+
+    public void setPnlVerAlertas(JPanel pnlVerAlertas) {
+        this.pnlVerAlertas = pnlVerAlertas;
+    }
+
+    public JTextField getTxtDestino() {
+        return txtDestino;
+    }
+
+    public void setTxtDestino(JTextField txtDestino) {
+        this.txtDestino = txtDestino;
+    }
+
+    public JTextField getTxtNumeroPersonas() {
+        return txtNumeroPersonas;
+    }
+
+    public void setTxtNumeroPersonas(JTextField txtNumeroPersonas) {
+        this.txtNumeroPersonas = txtNumeroPersonas;
+    }
+
+    public JTextField getTxtPuntoInicio() {
+        return txtPuntoInicio;
+    }
+
+    public void setTxtPuntoInicio(JTextField txtPuntoInicio) {
+        this.txtPuntoInicio = txtPuntoInicio;
     }
 
     @SuppressWarnings("unchecked")
@@ -746,12 +1321,8 @@ public class Principal extends javax.swing.JFrame {
         jScrollPane1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
         lstListEstaciones.setBackground(new java.awt.Color(180, 0, 0));
-        lstListEstaciones.setForeground(new java.awt.Color(0, 0, 0));
-        lstListEstaciones.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "xd1", "xd2", "xd3" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
+        lstListEstaciones.setFont(new java.awt.Font("Lucida Fax", 0, 14)); // NOI18N
+        lstListEstaciones.setForeground(new java.awt.Color(255, 255, 255));
         lstListEstaciones.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         lstListEstaciones.setSelectionBackground(new java.awt.Color(240, 0, 0));
         lstListEstaciones.setSelectionForeground(new java.awt.Color(255, 255, 255));
@@ -885,6 +1456,7 @@ public class Principal extends javax.swing.JFrame {
     private void btnRegistrarPersonasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarPersonasActionPerformed
         java.awt.CardLayout cl = (java.awt.CardLayout)(HomeCardLayout2.getLayout());
         cl.show(HomeCardLayout2, "card2");
+        ctrl.mostrarEstacionesEnLista();
     }//GEN-LAST:event_btnRegistrarPersonasActionPerformed
 
     private void btnVerAlertasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerAlertasActionPerformed
@@ -989,7 +1561,7 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_txtNumeroPersonasActionPerformed
 
     private void btnRegistrarNumeroPersonasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarNumeroPersonasActionPerformed
-        // TODO add your handling code here:
+        ctrl.registrarCantidad();
     }//GEN-LAST:event_btnRegistrarNumeroPersonasActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

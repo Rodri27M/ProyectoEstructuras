@@ -1,100 +1,141 @@
 package co.edu.konradlorenz.controller;
 
-import co.edu.konradlorenz.model.estructuras.*;
-import co.edu.konradlorenz.model.*;
+import co.edu.konradlorenz.model.bus.*;
+import co.edu.konradlorenz.model.enums.*;
+import co.edu.konradlorenz.model.route.*;
+import co.edu.konradlorenz.model.station.*;
+import co.edu.konradlorenz.model.user.*;
 import co.edu.konradlorenz.view.*;
 import java.util.*;
+import java.util.logging.*;
 import javax.swing.*;
 
 public class Controlador {
 
+    //VIEW
+    View view = new View();
     Home home;
     Principal principal;
 
-    Ventana objVentana = new Ventana();
-    ListaEstacion objListaEstacion = new ListaEstacion();
-    Estacion objEstacion = new Estacion();
-    ListaBus objDiccionario = new ListaBus();
-    Usuario objUsuario = new Usuario();
-    ListaUsuarios objHashTable = new ListaUsuarios();
-    Bus objBus = new Bus();
-    Ruta objRuta = new Ruta();
-    GrafoRutas objGrafoRutas = new GrafoRutas();
-    ListaRutas objListaEnlazada = new ListaRutas();
+    //MODEL
+    StationList stationList = new StationList();
+    BusHashMap busHashMap = new BusHashMap();
+    UsersHashtable userHashtable = new UsersHashtable();
+    RoutesLinkedList routesLinkedList = new RoutesLinkedList();
+    RouteGraphMap RouteGraphMap = new RouteGraphMap();
+
+    //OTHERS
+    boolean save = true;//TODO: implement a future database
 
     public void run() {
 
-//        Esto es la "pantalla de carga"
-//        home = new Home();
-//        home.setVisible(true);
-//        home.setLocationRelativeTo(null);
+        preloadData();
+
+        open();
+
+        int op;
+        do {//TODO: Delete when refactored to GUI
+            view.showMessage("--MENU PRINCIPAL--");
+            view.menu();
+            op = Controlador.this.checkInteger();
+            switch (op) {
+                case 3 ->
+                    fleetManagement();
+                case 4 ->
+                    calculateRoutes();
+                case 5 ->
+                    routesManagement();
+                case 6 ->
+                    validateAccess();
+                case 7 ->
+                    view.showMessage("saliendo del Programa");
+                default ->
+                    view.showMessage("Opcion invalida. Por favor, ingresar una de las opciones disponibles.");
+            }
+        } while (op != 7);
+    }//run
+
+    public void open() {
+
+        home = new Home();
+        home.setVisible(true);
+        home.setLocationRelativeTo(null);
+
+        for (int i = 1; i <= 100; i++) {
+            try {
+                home.getProgressBar().setValue(i);
+                Thread.sleep(75);//default by 13rian -> 75
+            } catch (InterruptedException ex) {
+                Logger.getLogger(Controlador.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            //Los siguientes mensajes son solo estéticos, pero pueden ser implementados de mejor forma al cargar con algo real.
+            switch (i) {
+                case 1 ->
+                    home.getLblMessage().setText("Conectando con la base de datos...");
+                case 25 ->
+                    home.getLblMessage().setText("Cargando estaciones...");
+                case 50 ->
+                    home.getLblMessage().setText("Cargando grafos...");
+                case 75 ->
+                    home.getLblMessage().setText("Analizando rutas óptimas...");
+            }
+
+        }
+
+        home.dispose();
+
         principal = new Principal(this);
         principal.setVisible(true);
         principal.setLocationRelativeTo(null);
 
-        precargarDatos();
+    }//open
 
-        int op;
-        do {
-            objVentana.mostrarMensaje("--MENU PRINCIPAL--");
-            objVentana.menu();
-            op = entero();
-            switch (op) {
-                case 2 ->
-                    gestionEstacion();
-                case 3 ->
-                    gestionFlota();
-                case 4 ->
-                    calcularRutas();
-                case 5 ->
-                    gentionRutas();
-                case 6 ->
-                    validarAcceso();
-                case 7 ->
-                    objVentana.mostrarMensaje("saliendo del Programa");
-                default ->
-                    objVentana.mostrarMensaje("Opcion invalida. Por favor, ingresar una de las opciones disponibles.");
-            }
-        } while (op != 7);
+    public void setStationsLists(String[] names) {
+        //TODO: Implementar una lista que guarde todas las listas del GUI y las recorra para no andar actualizando una a una en este method xd
+        principal.getLstListaEstaciones1().setListData(names);
+        principal.getLstListaEstaciones2().setListData(names);
+        principal.getLstListaEstaciones3().setListData(names);
+        principal.getLstListaEstaciones4().setListData(names);
+        principal.getLstListaEstaciones5().setListData(names);
+    }//setStationsLists
 
-    }
+    public void recordNumberOfPeople() {
 
-    public void registrarCantidadDePersonas() {
+        Integer amount = checkInteger(principal.getTxtNumeroPersonas());
 
-        Integer cantidad = entero(principal.getTxtNumeroPersonas());
-
-        if (cantidad == null) {
-            JOptionPane.showMessageDialog(principal, "Debe ingresar un número de personas", "Transmilenio S.A.", JOptionPane.ERROR_MESSAGE);
+        if (amount == null) {
+            view.showMessage(principal, "Debe ingresar un número de personas", JOptionPane.ERROR_MESSAGE);
             return; //No continua si está vacío
-        } else if (cantidad < 0) {
-            JOptionPane.showMessageDialog(principal, "El número no debe ser negativo", "Transmilenio S.A.", JOptionPane.ERROR_MESSAGE);
+        } else if (amount < 0) {
+            view.showMessage(principal, "El número no debe ser negativo", JOptionPane.ERROR_MESSAGE);
             return; //No continua si es negativo
         }
 
-        String nombreEstacion = principal.getLstListaEstaciones1().getSelectedValue();
-        Estacion estacion = objListaEstacion.buscarNombre(nombreEstacion);
+        String nameEstacion = principal.getLstListaEstaciones1().getSelectedValue();
+        Station estacion = stationList.findName(nameEstacion);
 
         if (estacion != null) {
-            estacion.setFlujoPersonas(cantidad);
-            JOptionPane.showMessageDialog(principal, "Número de personas registrado exitosamente", "Transmilenio S.A.", JOptionPane.PLAIN_MESSAGE);
+            estacion.setFlowOfPeople(amount);
+            view.showMessage(principal, "Número de personas registrado exitosamente", JOptionPane.PLAIN_MESSAGE);
         } else {
-            JOptionPane.showMessageDialog(principal, "Debe seleccionar una estación", "Transmilenio S.A.", JOptionPane.ERROR_MESSAGE);
+            view.showMessage(principal, "Debe seleccionar una estación", JOptionPane.ERROR_MESSAGE);
         }
 
-    }
+    }//recordNumberOfPeople
 
-    public void mostrarListaDeAlertas() {
-        objVentana.mostrarMensaje("Cargando lista de alertas");
+    public void showAlertsList() {
+        view.showMessage("Loading alerts list");
 
-        List<Estacion> estaciones = objListaEstacion.getEstacion();
+        List<Station> stations = stationList.getStation();
         List<String> alertas = new ArrayList<>();
 
-        for (int i = 0; i < estaciones.size(); i++) {
-            Estacion estacion = estaciones.get(i);
+        for (int i = 0; i < stations.size(); i++) {
+            Station estacion = stations.get(i);
 
-            alertas.add("> Estación: " + estacion.getNombreEstacion());
+            alertas.add("> Estación: " + estacion.getName());
 
-            if (estacion.getFlujoPersonas() > estacion.getCapacidadMaxima()) {
+            if (estacion.getFlowOfPeople() > estacion.getMaxCapacity()) {
                 alertas.add("     Estación llena");
                 alertas.add(" ");
             } else {
@@ -103,30 +144,29 @@ public class Controlador {
             }
 
             String[] alerta = alertas.toArray(String[]::new);
-            principal.setListaAlertas(alerta);
+            principal.getLstListAlertas().setListData(alerta);
         }
-    }
+    }//showAlertsList
 
-    public void mostrarListaDeEstaciones() {
-        objVentana.mostrarMensaje("Cargando lista de estaciones");
+    public void showStationsList() {
+        view.showMessage("Loading stations list");
 
-        List<Estacion> estaciones = objListaEstacion.getEstacion();
-        String[] nombres = estaciones.stream()
-                .map(Estacion::getNombreEstacion)
+        List<Station> stations = stationList.getStation();
+        String[] names = stations.stream()
+                .map(Station::getName)
                 .toArray(String[]::new);
-        principal.setListaEstaciones(nombres);
-        principal.setListaEstaciones(nombres);
-    }
+        setStationsLists(names);
+    }//showStationsList
 
-    public void mostrarParadasPorEstacion() {
-        objVentana.mostrarMensaje("Cargando lista de paradas por estacion");
+    public void showRoutesPerStation() {
+        view.showMessage("Loading routes per station");
 
-        List<Estacion> estaciones = objListaEstacion.getEstacion();
+        List<Station> stations = stationList.getStation();
         List<String> rutasList = new ArrayList<>();
 
-        for (Estacion estacion : estaciones) {
-            String conexa = estacion.mostrarRutasConexas();
-            rutasList.add("> Estación: " + estacion.getNombreEstacion());
+        for (Station estacion : stations) {
+            String conexa = estacion.showRelatedRoutes();
+            rutasList.add("> Estación: " + estacion.getName());
             if (conexa != null && !conexa.isEmpty()) {
                 rutasList.add("     Rutas Conexas: ");
 
@@ -141,41 +181,289 @@ public class Controlador {
             rutasList.add(" "); // "salto de linea"
         }
         String[] rutas = rutasList.toArray(String[]::new);
-        principal.setListaDeParadasPorEstacion(rutas);
-    }
+        principal.getLstListaDeParadasPorEstacion().setListData(rutas);
+    }//showRoutesPerStation
 
-    public void mostrarEstadoDeEstaciones() {
-        objVentana.mostrarMensaje("Cargando lista del estado de las estaciones");
+    public void showStationsStatus() {
+        view.showMessage("Loading stations status");
 
-        List<Estacion> estaciones = objListaEstacion.getEstacion();
+        List<Station> stations = stationList.getStation();
         List<String> atributos = new ArrayList<>();
 
-        for (Estacion estacion : estaciones) {
+        for (Station estacion : stations) {
 
-            atributos.add("> Estación: " + estacion.getNombreEstacion());
-            atributos.add("     Capacidad de la Estacion: " + estacion.getCapacidadMaxima());
-            atributos.add("     Flujo de personas: " + estacion.getFlujoPersonas());
-            atributos.add("     Saturacion: " + estacion.getSaturacion());
-            atributos.add("     Funcionamiento: " + servicio(estacion.isFuncionamiento()));
+            atributos.add("> Estación: " + estacion.getName());
+            atributos.add("     Capacidad de la Estacion: " + estacion.getMaxCapacity());
+            atributos.add("     Flujo de personas: " + estacion.getFlowOfPeople());
+            atributos.add("     Saturacion: " + estacion.getSaturation());
+            atributos.add("     Funcionamiento: " + estacion.getOperation());
             atributos.add(" "); // "salto de linea"
         }
         String[] monitoreo = atributos.toArray(String[]::new);
-        principal.setListaDeEstadoDeEstaciones(monitoreo);
-    }
+        principal.getLstListaDeEstadoDeLasEstaciones().setListData(monitoreo);
+    }//showStationsStatus
 
-    public String servicio(boolean validar) {
-        String servicio;
-        if (validar == true) {
-            servicio = "En servicio";
-        } else {
-            servicio = "Fuera de servicio";
+    public void loadCombosAddStation() {
+
+        principal.getCmbAddSaturation().removeAllItems();
+        for (Saturation saturation : Saturation.values()) {
+            principal.getCmbAddSaturation().addItem(saturation.toString());
         }
-        return servicio;
-    }
 
-    public boolean pedirBoolean(int op) {
+        principal.getCmbAddOperation().removeAllItems();
+        for (Operation operation : Operation.values()) {
+            principal.getCmbAddOperation().addItem(operation.toString());
+        }
+
+    }//loadCombosAddStation
+
+    public void addStation() {
+
+        String name;
+        Integer capacity, flow;
+        Saturation saturation;
+        Operation operation;
+
+        name = principal.getTxtAddNameStation().getText();
+
+        if (repeatedStation(name)) {
+            view.showMessage(principal, "El nombre de la estación ya existe", JOptionPane.ERROR_MESSAGE);
+            return; //No continua si está vacío
+        }
+
+        capacity = checkInteger(principal.getTxtAddMaxCapacity());
+        if (capacity == null) {
+            view.showMessage(principal, "Debe ingresar un número de capacidad máxima", JOptionPane.ERROR_MESSAGE);
+            return; //No continua si está vacío
+        } else if (capacity < 0) {
+            view.showMessage(principal, "El número de capacidad no debe ser negativo", JOptionPane.ERROR_MESSAGE);
+            return; //No continua si es negativo
+        }
+
+        flow = checkInteger(principal.getTxtAddFlowOfPeople());
+        if (flow == null) {
+            view.showMessage(principal, "Debe ingresar el flujo de personas", JOptionPane.ERROR_MESSAGE);
+            return; //No continua si está vacío
+        } else if (flow < 0) {
+            view.showMessage(principal, "El número de saturación no debe ser negativo", JOptionPane.ERROR_MESSAGE);
+            return; //No continua si es negativo
+        }
+
+        int satu = principal.getCmbAddSaturation().getSelectedIndex();
+        saturation = Saturation.values()[satu];
+
+        int oper = principal.getCmbAddOperation().getSelectedIndex();
+        operation = Operation.values()[oper];
+
+        stationList.addStation(new Station(name, capacity, flow, saturation, operation));
+
+        view.showMessage(principal, "Estación añadida exitosamente", JOptionPane.PLAIN_MESSAGE);
+
+    }//addStation
+
+    public boolean repeatedStation(String name) {
+        ArrayList<Station> stationArray = stationList.getStation();
+        for (Station station : stationArray) {
+            if (station.getName().equals(name)) {
+                return true;
+            }
+        }
+        return false;
+    }//repeatedStation
+
+    public void loadDataModifyStation() {
+        String stationName;
+        Station station = null;
+        try {
+            stationName = principal.getLstListaEstaciones3().getSelectedValue();
+            station = stationList.findName(stationName);
+        } catch (NullPointerException e) {
+            view.showMessage(principal, "No seleccionó una estación", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception e) {
+            view.showMessage(principal, "Error desconocido", JOptionPane.ERROR_MESSAGE);
+        }
+
+        principal.getCmbModifySaturation().removeAllItems();
+        for (Saturation saturation : Saturation.values()) {
+            principal.getCmbModifySaturation().addItem(saturation.toString());
+        }
+
+        principal.getCmbModifyOperation().removeAllItems();
+        for (Operation operation : Operation.values()) {
+            principal.getCmbModifyOperation().addItem(operation.toString());
+        }
+
+        principal.getTxtModifyNameStation().setText(station.getName());
+        principal.getTxtModifyMaxCapacity().setText(String.valueOf(station.getMaxCapacity()));
+        principal.getTxtModifyFlowOfPeople().setText(String.valueOf(station.getFlowOfPeople()));
+        principal.getCmbModifySaturation().setSelectedIndex(station.getSaturation().ordinal());
+        principal.getCmbModifyOperation().setSelectedIndex(station.getOperation().ordinal());
+
+    }//loadDataModifyStation
+
+    public void modifyStation() {
+        String stationName;
+        Station station = null;
+
+        if (principal.getLstListaEstaciones3().getSelectedIndex() == -1) {
+            view.showMessage(principal, "Debe seleccionar una estación", JOptionPane.ERROR_MESSAGE);
+            return; //No continua si está vacío
+        }
+
+        try {
+            stationName = principal.getLstListaEstaciones3().getSelectedValue();
+            station = stationList.findName(stationName);
+        } catch (Exception e) {
+            view.showMessage(principal, "Error desconocido", JOptionPane.ERROR_MESSAGE);
+        }
+
+        String name;
+        Integer capacity, flow;
+        Saturation saturation;
+        Operation operation;
+
+        name = principal.getTxtModifyNameStation().getText();
+
+        capacity = checkInteger(principal.getTxtModifyMaxCapacity());
+        if (capacity == null) {
+            view.showMessage(principal, "Debe ingresar un número de capacidad máxima", JOptionPane.ERROR_MESSAGE);
+            return; //No continua si está vacío
+        } else if (capacity < 0) {
+            view.showMessage(principal, "El número de capacidad no debe ser negativo", JOptionPane.ERROR_MESSAGE);
+            return; //No continua si es negativo
+        }
+
+        flow = checkInteger(principal.getTxtModifyFlowOfPeople());
+        if (flow == null) {
+            view.showMessage(principal, "Debe ingresar el flujo de personas", JOptionPane.ERROR_MESSAGE);
+            return; //No continua si está vacío
+        } else if (flow < 0) {
+            view.showMessage(principal, "El número de saturación no debe ser negativo", JOptionPane.ERROR_MESSAGE);
+            return; //No continua si es negativo
+        }
+
+        int satu = principal.getCmbModifySaturation().getSelectedIndex();
+        saturation = Saturation.values()[satu];
+
+        int oper = principal.getCmbModifyOperation().getSelectedIndex();
+        operation = Operation.values()[oper];
+
+        station.setName(name);
+        station.setMaxCapacity(capacity);
+        station.setFlowOfPeople(flow);
+        station.setSaturation(saturation);
+        station.setOperation(operation);
+
+        showStationsList();
+        view.showMessage(principal, "Estación modificada exitosamente", JOptionPane.PLAIN_MESSAGE);
+    }//modifyStation
+
+    public void deleteStation() {
+        String stationName;
+        Station station = null;
+
+        if (principal.getLstListaEstaciones4().getSelectedIndex() == -1) {
+            view.showMessage(principal, "Debe seleccionar una estación", JOptionPane.ERROR_MESSAGE);
+            return; //No continua si está vacío
+        }
+
+        try {
+            stationName = principal.getLstListaEstaciones4().getSelectedValue();
+            station = stationList.findName(stationName);
+        } catch (Exception e) {
+            view.showMessage(principal, "Error desconocido", JOptionPane.ERROR_MESSAGE);
+        }
+
+        stationList.deleteStation(station);
+
+        showStationsList();
+        view.showMessage(principal, "Estación eliminada exitosamente", JOptionPane.PLAIN_MESSAGE);
+
+    }//deleteStation
+
+    public void showRoutesList() {
+        view.showMessage("Loading all the stops");
+
+        String routes = routesLinkedList.showList();
+
+        List<String> routesList = new ArrayList<>();
+
+        String[] routesSplit = routes.split("\\|");
+        routesList.addAll(Arrays.asList(routesSplit));
+
+        String[] rutas = routesList.toArray(String[]::new);
+        principal.getLstListaDeParadas().setListData(rutas);
+
+    }//showRoutesList
+
+    public void loadCombosAddStop() {
+        view.showMessage("Loading the stops names");
+        String select = "Seleccione";
+
+        principal.getCmbSelectStops().removeAllItems();
+        principal.getCmbSelectStops().addItem(select);
+
+        RoutesNode current = routesLinkedList.getHead();
+        while (current != null) {
+            String name = current.getRoute().getName();
+            principal.getCmbSelectStops().addItem(name);
+            current = current.getNext();
+        }
+
+    }//loadCombosAddStop
+
+    public void assignStop() {
+
+        String stationName;
+        String routeName = null;
+        Station station = null;
+        Route route = null;
+        try {
+            try {
+                stationName = principal.getLstListaEstaciones5().getSelectedValue();
+                station = stationList.findName(stationName);
+
+                if (stationName == null) {
+                    view.showMessage(principal, "No seleccionó una estación", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+            } catch (Exception e) {
+                view.showMessage(principal, "Error desconocido en stationName", JOptionPane.ERROR_MESSAGE);
+            }
+
+            try {
+                routeName = principal.getCmbSelectStops().getSelectedItem().toString();
+                route = routesLinkedList.findRoute(routeName);
+            } catch (Exception e) {
+                view.showMessage(principal, "Error desconocido en routeName", JOptionPane.ERROR_MESSAGE);
+            }
+
+            if (routeName.equals("Seleccione")) {
+                view.showMessage(principal, "No seleccionó una ruta", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            Route repeatedRoute = station.getRelatedList().findRoute(routeName);
+            if (repeatedRoute != null) {
+                String repeatedRouteName = repeatedRoute.getName();
+                if (routeName.equals(repeatedRouteName)) {
+                    view.showMessage(principal, "La ruta " + routeName + " ya existe en la estación", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+            }
+
+            station.addRelatedList(route);
+            view.showMessage(principal, "Ruta " + routeName + " añadida correctamente", JOptionPane.PLAIN_MESSAGE);
+
+        } catch (NullPointerException e) {
+            view.showMessage(principal, "Null pointer en saber que dx", JOptionPane.ERROR_MESSAGE);
+        }
+
+    }//assignStop
+
+    public boolean askBoolean(int op) {
         boolean funcionamiento = false;
-
         do {
             if (op == 1) {
                 funcionamiento = true;
@@ -184,374 +472,262 @@ public class Controlador {
             }
         } while (op != 1 || op != 2);
         return funcionamiento;
-    }
+    }//askBoolean
 
-    public void gestionEstacion() {
+    public void stationsList() {
+        view.showMessage("---Lista Estaciones---");
+        for (Station estacion : stationList.getStation()) {
+            view.showMessage("Estacion: " + estacion.getName());
+        }
+    }//stationsList
+
+    public void fleetManagement() {//TODO: Delete when refactored to GUI
+        view.showMessage(" ");
         int op;
         do {
-            objVentana.gestionEstacion();
-            op = entero();
+            view.showMessage("--Gestion de Flota--");
+            view.fleet();
+            op = Controlador.this.checkInteger();
             switch (op) {
                 case 1 ->
-                    datosEstacion();
+                    addBus();
                 case 2 ->
-                    eliminarEstacion();
+                    removeBus();
                 case 3 ->
-                    modificarEstacion();
+                    accessBus();
                 case 4 ->
-                    asignarParada();
+                    modifyBus();
                 case 5 ->
-                    objVentana.mostrarMensaje("Saliendo del programa");
-                default ->
-                    objVentana.mostrarMensaje("Ingresar una de las opciones disponibles");
-            }
-
-        } while (op != 5);
-    }
-
-    public void datosEstacion() {
-        // Metodo de agregar datos de la estacion(Se esta validando si se desea agregar los datos precargados)
-        String nombre, saturacion;
-        int capacidad, flujo;
-        ListaRutas paradas;
-        boolean servicio;
-        objVentana.mostrarMensaje("--Agregando estacion--");
-        objVentana.mostrarMensaje("Ingrese el nombre de la estacion");
-        nombre = objVentana.pedirString();
-        objVentana.mostrarMensaje("Ingrese la capacidad maxima de la estacion");
-        capacidad = entero();
-        objVentana.mostrarMensaje("Ingrese flujo de personas");
-        flujo = entero();
-        objVentana.mostrarMensaje("Ingresar estado de saturacion");
-        saturacion = objVentana.pedirString();
-        objVentana.mostrarMensaje("Seleccionar una de las siguientes opciones: \n1. En servicion \n2. Fuera de servicio");
-        int op = entero();
-        servicio = pedirAutorizacion(op);
-        Estacion agregar = new Estacion(nombre, capacidad, flujo, null, saturacion, servicio);
-        objListaEstacion.agregar(agregar);
-    }
-
-    public void eliminarEstacion() {
-        if (objListaEstacion != null) {
-            objVentana.mostrarMensaje("Ingrese el nombre de la estacion a eliminar:");
-            String nombre = objVentana.pedirString();
-            Estacion estacion = objListaEstacion.buscarNombre(nombre);
-            if (estacion == null) {
-                objVentana.mostrarMensaje("La estacio " + nombre + " no esta en la lista");
-            } else {
-                objListaEstacion.eliminar(nombre);
-            }
-        } else {
-            objVentana.mostrarMensaje("Lista de estaciones vacia");
-        }
-    }
-
-    public void modificarEstacion() {
-        if (objListaEstacion.getEstacion() != null) {
-            objVentana.mostrarMensaje("Ingrese el nombre de la estacion a modificar ");
-            String nombre = objVentana.pedirString();
-            Estacion estacion = objListaEstacion.buscarNombre(nombre);
-            if (estacion != null) {
-                objVentana.mostrarMensaje("Ingrese la capacidad Maxima ");
-                estacion.setCapacidadMaxima(entero());
-                objVentana.mostrarMensaje("Ingrese saturacion");
-                estacion.setSaturacion(objVentana.pedirString());
-                objVentana.mostrarMensaje("Ingresel el funcionamiendo de la estacion. 1. En servicio o 2. Fuera de Servicio");
-                boolean servicio = pedirBoolean(entero());
-                estacion.setFuncionamiento(servicio);
-                objVentana.mostrarMensaje("Ingrese el año del bus: ");
-
-            } else {
-                objVentana.mostrarMensaje("Estacion" + nombre + " no esta en la lista");
-            }
-        } else {
-            objVentana.mostrarMensaje("No hay estaciones en la lista");
-        }
-    }
-
-    public void listaEstaciones() {
-        objVentana.mostrarMensaje("---Lista Estaciones---");
-        for (Estacion estacion : objListaEstacion.getEstacion()) {
-            objVentana.mostrarMensaje("Estacion: " + estacion.getNombreEstacion());
-        }
-    }
-
-    public void asignarParada() {
-        objVentana.mostrarMensaje("-ASIGNADO RUTA-");
-        objVentana.mostrarMensaje("Ingrese el nombre de la Estacion");
-        String nombre = objVentana.pedirString();
-        Estacion estacion = objListaEstacion.buscarNombre(nombre);
-        if (estacion != null) {
-            listaRutas();
-            objVentana.mostrarMensaje("Ingrese el nombre de la ruta");
-            String rutaNombre = objVentana.pedirString();
-            Ruta ruta = objListaEnlazada.buscarRuta(rutaNombre);
-            if (ruta != null) {
-                estacion.addListaConexas(ruta);
-                objVentana.mostrarMensaje("Se agrego correctamente");
-            } else {
-                objVentana.mostrarMensaje("La ruta " + rutaNombre + " no esta en la lista");
-            }
-
-        } else {
-            objVentana.mostrarMensaje("La estacion " + nombre + " no esta en la lista");
-        }
-
-    }
-
-    public void gestionFlota() {
-        objVentana.mostrarMensaje(" ");
-        int op;
-        do {
-            objVentana.mostrarMensaje("--Gestion de Flota--");
-            objVentana.flota();
-            op = entero();
-            switch (op) {
-                case 1 ->
-                    agregarBus();
-                case 2 ->
-                    retirarBus();
-                case 3 ->
-                    accerderBus();
-                case 4 ->
-                    modificarBus();
-                case 5 ->
-                    asignarRuta();
+                    assignRoute();
                 case 6 ->
-                    listaBus();
+                    busList();
                 case 7 ->
-                    objVentana.mostrarMensaje("Saliendo de gestionar flota");
+                    view.showMessage("Saliendo de gestionar flota");
                 default ->
-                    objVentana.mostrarMensaje("Opcion Invalida. Por favor, ingresar una de las opciones disponibles");
+                    view.showMessage("Opcion Invalida. Por favor, ingresar una de las opciones disponibles");
             }
         } while (op != 7);
-    }
+    }//fleetManagement
 
-    public void agregarBus() {
+    public void addBus() {
         //Metodo de pedir datos(Se esta validando si agregar datos precargados)   
         String ruta, placa, entrada;
         int ID, capacidad, asientos;
-        objVentana.mostrarMensaje("---Agregando Bus---");
-        objVentana.mostrarMensaje("Ingrese el ID del bus:");
-        ID = entero();
-        objVentana.mostrarMensaje("Ingrese la placa del bus:");
-        placa = objVentana.pedirString();
-        objVentana.mostrarMensaje("Ingrese el año de entrada del bus;");
-        entrada = objVentana.pedirString();
-        objVentana.mostrarMensaje("Ingrese la capacidad del bus:");
-        capacidad = entero();
-        objVentana.mostrarMensaje("Ingrese el numero de asientos del bus:");
-        asientos = entero();
+        view.showMessage("---Agregando Bus---");
+        view.showMessage("Ingrese el ID del bus:");
+        ID = Controlador.this.checkInteger();
+        view.showMessage("Ingrese la placa del bus:");
+        placa = view.askNext();
+        view.showMessage("Ingrese el año de entrada del bus;");
+        entrada = view.askNext();
+        view.showMessage("Ingrese la capacidad del bus:");
+        capacidad = Controlador.this.checkInteger();
+        view.showMessage("Ingrese el numero de asientos del bus:");
+        asientos = Controlador.this.checkInteger();
         Bus agregar = new Bus(ID, capacidad, null, placa, entrada, asientos);
-        objDiccionario.agregarBus(agregar);
-    }
+        busHashMap.addBus(agregar);
+    }//addBus
 
-    public void retirarBus() {
-        if (objDiccionario.getBuses() != null) {
-            objVentana.mostrarMensaje("Ingrese el ID del Bus a retirar:");
-            int id = entero();
-            Bus bus = objDiccionario.obtenerBus(id);
+    public void removeBus() {
+        if (busHashMap.getBuses() != null) {
+            view.showMessage("Ingrese el ID del Bus a retirar:");
+            int id = Controlador.this.checkInteger();
+            Bus bus = busHashMap.getBus(id);
             if (bus == null) {
-                objVentana.mostrarMensaje("El bus con ID " + id + " no esta en la lista");
+                view.showMessage("El bus con ID " + id + " no esta en la lista");
             } else {
-                objDiccionario.eliminarBus(id);
+                busHashMap.deleteBus(id);
             }
         } else {
-            objVentana.mostrarMensaje("Lista de buses vacia");
+            view.showMessage("Lista de buses vacia");
         }
-    }
+    }//removeBus
 
-    public void accerderBus() {
-        if (objDiccionario.getBuses() == null || objDiccionario.getBuses().isEmpty()) {
-            objVentana.mostrarMensaje("Lista de buses vacia");
+    public void accessBus() {
+        if (busHashMap.getBuses() == null || busHashMap.getBuses().isEmpty()) {
+            view.showMessage("Lista de buses vacia");
             return;
         }
 
-        objVentana.mostrarMensaje("Ingrese el ID para acceder");
-        int id = entero();
-        Bus bus = objDiccionario.obtenerBus(id);
+        view.showMessage("Ingrese el ID para acceder");
+        int id = Controlador.this.checkInteger();
+        Bus bus = busHashMap.getBus(id);
         if (bus == null) {
-            objVentana.mostrarMensaje("El bus con ID " + id + " no esta en la lista");
+            view.showMessage("El bus con ID " + id + " no esta en la lista");
         } else {
-            objVentana.mostrarMensaje("Informacion del bus: \n" + bus.toString());
+            view.showMessage("Informacion del bus: \n" + bus.toString());
         }
-    }
+    }//accessBus
 
-    public void modificarBus() {
-        if (objDiccionario.getBuses() != null) {
-            objVentana.mostrarMensaje("Ingrese el ID del bus que se va a modificar ");
-            int id = entero();
-            Bus bus = objDiccionario.obtenerBus(id);
+    public void modifyBus() {
+        if (busHashMap.getBuses() != null) {
+            view.showMessage("Ingrese el ID del bus que se va a modificar ");
+            int id = Controlador.this.checkInteger();
+            Bus bus = busHashMap.getBus(id);
             if (bus != null) {
-                objVentana.mostrarMensaje("Ingrese la placa: ");
-                bus.setPlaca(objVentana.pedirString());
-                objVentana.mostrarMensaje("Ingrese la capacidad del bus: ");
-                bus.setCapacidad(entero());
-                objVentana.mostrarMensaje("Ingrese la ruta del bus: ");
-                bus.setRutaAsignada(objVentana.pedirString());
-                objVentana.mostrarMensaje("Ingrese el año del bus: ");
-                bus.setAñoEntrada(objVentana.pedirString());
-                objVentana.mostrarMensaje("Ingrese el numero de asientos del bus");
-                bus.setNumAsientos(entero());
+                view.showMessage("Ingrese la placa: ");
+                bus.setPlate(view.askNext());
+                view.showMessage("Ingrese la capacidad del bus: ");
+                bus.setCapacity(Controlador.this.checkInteger());
+                view.showMessage("Ingrese la ruta del bus: ");
+                bus.setRouteAssigned(view.askNext());
+                view.showMessage("Ingrese el año del bus: ");
+                bus.setYearIn(view.askNext());
+                view.showMessage("Ingrese el numero de asientos del bus");
+                bus.setSeatsNumber(Controlador.this.checkInteger());
             } else {
-                objVentana.mostrarMensaje("El bus con ID " + id + " no esta en la lista");
+                view.showMessage("El bus con ID " + id + " no esta en la lista");
             }
         } else {
-            objVentana.mostrarMensaje("No hay buses en la lista");
+            view.showMessage("No hay buses en la lista");
         }
-    }
+    }//modifyBus
 
-    public void asignarRuta() {
-        objVentana.mostrarMensaje("---Asignado Ruta---");
-        objVentana.mostrarMensaje("Ingrese el ID del Bus");
-        int id = entero();
-        Bus bus = objDiccionario.obtenerBus(id);
+    public void assignRoute() {
+        view.showMessage("---Asignado Ruta---");
+        view.showMessage("Ingrese el ID del Bus");
+        int id = Controlador.this.checkInteger();
+        Bus bus = busHashMap.getBus(id);
         if (bus != null) {
-            listaRutas();
-            objVentana.mostrarMensaje("Ingrese El nombre de la ruta que se va asignar");
-            String nombre = objVentana.pedirString();
+            showRoutesList();
+            view.showMessage("Ingrese El name de la ruta que se va asignar");
+            String name = view.askNext();
 
-            String p = objListaEnlazada.buscar(nombre).getConexa().getNombreRuta();
+            String p = routesLinkedList.findNode(name).getRoute().getName();
             if (p != null) {
-                bus.setRutaAsignada(p);
-                objVentana.mostrarMensaje("Ruta asignada");
+                bus.setRouteAssigned(p);
+                view.showMessage("Ruta asignada");
             }
         } else {
-            objVentana.mostrarMensaje("Bus no encontrado");
+            view.showMessage("Bus no encontrado");
         }
-    }
+    }//assignRoute
 
-    public void listaBus() {
-        if (objDiccionario.getBuses() == null) {
-            objVentana.mostrarMensaje("No hay lista de Buses");
+    public void busList() {
+        if (busHashMap.getBuses() == null) {
+            view.showMessage("No hay lista de Buses");
         } else {
-            objVentana.mostrarMensaje("Listado de buses ");
-            for (Bus bus : objDiccionario.getBuses().values()) {
-                objVentana.mostrarMensaje(" Bus: " + bus.toString());
+            view.showMessage("Listado de buses ");
+            for (Bus bus : busHashMap.getBuses().values()) {
+                view.showMessage(" Bus: " + bus.toString());
             }
         }
-    }
+    }//busList
 
-    public void gentionRutas() {
-        objVentana.mostrarMensaje(" ");
+    public void routesManagement() {//TODO: Delete when refactored to GUI
+        view.showMessage(" ");
 
         int op;
         do {
-            objVentana.mostrarMensaje("---Gestion de Rutas---");
-            objVentana.mostrarMensaje(" ");
-            objVentana.gestionRutas();
-            op = entero();
+            view.showMessage("---Gestion de Rutas---");
+            view.showMessage(" ");
+            view.routesManagement();
+            op = Controlador.this.checkInteger();
             switch (op) {
                 case 1 ->
-                    agregarRuta();
+                    addRoute();
                 case 2 ->
-                    eliminarRuta();
+                    deleteRoute();
                 case 3 ->
-                    asignarRuta();
+                    assignRoute();
                 case 4 ->
-                    modificarRuta();
+                    modifyRoute();
                 case 5 ->
-                    listaRutas();
+                    showRoutesList();
                 case 6 ->
-                    objVentana.mostrarMensaje("Saliendo de gestion de rutas");
+                    view.showMessage("Saliendo de gestion de rutas");
                 default ->
-                    objVentana.mostrarMensaje("Opcion invalidad. Por favor, ingresar una de las opciones disponibles");
+                    view.showMessage("Opcion invalidad. Por favor, ingresar una de las opciones disponibles");
             }
         } while (op != 6);
-    }
+    }//routesManagement
 
-    public void agregarRuta() {
-        objVentana.mostrarMensaje("Ruta Nueva:");
-        String nombre, origen, destino;
+    public void addRoute() {
+        view.showMessage("Ruta Nueva:");
+        String name, origen, destino;
         int tiempo;
-        objVentana.mostrarMensaje("Ingrese el Nombre de ruta");
-        nombre = objVentana.pedirString();
-        objVentana.mostrarMensaje("Ingrese la Partida de inicio de la Ruta");
-        origen = objVentana.pedirString();
-        objVentana.mostrarMensaje("Ingrese el destino de la ruta");
-        destino = objVentana.pedirString();
-        objVentana.mostrarMensaje("Ingrese el tiempo estimado de la ruta");
-        tiempo = entero();
-        Ruta objRuta = new Ruta(nombre, origen, destino, tiempo);
-        objListaEnlazada.insertFinal(objRuta);
+        view.showMessage("Ingrese el name de ruta");
+        name = view.askNext();
+        view.showMessage("Ingrese la Partida de inicio de la Ruta");
+        origen = view.askNext();
+        view.showMessage("Ingrese el destino de la ruta");
+        destino = view.askNext();
+        view.showMessage("Ingrese el tiempo estimado de la ruta");
+        tiempo = Controlador.this.checkInteger();
+        Route objRuta = new Route(name, origen, destino, tiempo);
+        routesLinkedList.insertRoute(objRuta);
+    }//addRoute
 
-    }
+    public void deleteRoute() {
+        view.showMessage("---Eliminando Ruta---");
+        view.showMessage("Ingrese el name ruta a Eliminar");
+        String name = view.askNext();
+        routesLinkedList.deleteRoute(name);
+    }//deleteRoute
 
-    public void eliminarRuta() {
-        objVentana.mostrarMensaje("---Eliminando Ruta---");
-        objVentana.mostrarMensaje("Ingrese el nombre ruta a Eliminar");
-        String nombre = objVentana.pedirString();
-        objListaEnlazada.borrar(nombre);
-    }
-
-    public void modificarRuta() {
-        objVentana.mostrarMensaje("--Modificando Ruta--");
-        String nombre, origen, destino;
+    public void modifyRoute() {
+        view.showMessage("--Modificando Ruta--");
+        String name, origen, destino;
         int tiempo;
-        objVentana.mostrarMensaje("Nombre de la ruta a modificar");
-        nombre = objVentana.pedirString();
+        Route route = new Route();
+        view.showMessage("name de la ruta a modificar");
+        name = view.askNext();
 
-        if (objListaEnlazada.buscar(nombre) != null) {
-            objRuta.setNombreRuta(nombre);
-            objVentana.mostrarMensaje("Ingrese el nuevo origen de la ruta: ");
-            objRuta.setOrigen(objVentana.pedirString());
-            objVentana.mostrarMensaje("Ingrese el nuevo destino de la ruta: ");
-            objRuta.setDestino(objVentana.pedirString());
-            objVentana.mostrarMensaje("Ingrese el tiempo estimado de la ruta: ");
-            objRuta.setTiempoEstimado(entero());
-            //  Ruta rutaModificada = new Ruta(nombre, origen, destino, tiempo);
-            boolean modificacion = objListaEnlazada.modificar(nombre, objRuta);
+        if (routesLinkedList.findNode(name) != null) {
+            route.setName(name);
+            view.showMessage("Ingrese el nuevo origen de la ruta: ");
+            route.setOrigin(view.askNext());
+            view.showMessage("Ingrese el nuevo destino de la ruta: ");
+            route.setDestiny(view.askNext());
+            view.showMessage("Ingrese el tiempo estimado de la ruta: ");
+            route.setEstimatedTime(Controlador.this.checkInteger());
+            //  Ruta rutaModificada = new Ruta(name, origen, destino, tiempo);
+            boolean modificacion = routesLinkedList.modifyRoute(name, route);
             if (modificacion) {
-                objVentana.mostrarMensaje("Ruta Modificada");
+                view.showMessage("Ruta Modificada");
             } else {
-                objVentana.mostrarMensaje("La ruta no fue modificada");
+                view.showMessage("La ruta no fue modificada");
             }
         } else {
-            objVentana.mostrarMensaje("La ruta no esta en la lista ");
+            view.showMessage("La ruta no esta en la lista ");
         }
-    }
+    }//modifyRoute
 
-    public void listaRutas() {
-        objVentana.mostrarMensaje("Lista Rutas: ");
-        objVentana.mostrarMensaje(objListaEnlazada.MostarLista());
-    }
-
-    public void validarAcceso() {
-        objVentana.mostrarMensaje(" ");
+    public void validateAccess() {//TODO: Delete when refactored to GUI
+        view.showMessage(" ");
         int op;
         do {
-            objVentana.mostrarMensaje("---VALIDACION---");
-            objVentana.mostrarMensaje(" ");
-            objVentana.acceso();
-            op = entero();
+            view.showMessage("---VALIDACION---");
+            view.showMessage(" ");
+            view.access();
+            op = Controlador.this.checkInteger();
             switch (op) {
                 case 1 ->
-                    ingresar();
+                    signIn();
                 case 2 ->
-                    validar();
+                    validate();
                 case 3 ->
-                    objVentana.mostrarMensaje("Saliendo de validar acceso");
+                    view.showMessage("Saliendo de validar acceso");
                 default ->
-                    objVentana.mostrarMensaje("Opcion invalidad. Ingrese una de las opciones disponibles");
+                    view.showMessage("Opcion invalida. Ingrese una de las opciones disponibles");
             }
         } while (op != 3);
-    }
+    }//validateAccess
 
-    public void ingresar() {
-        objVentana.mostrarMensaje("--Ingresando Usuariuo--");
-        objVentana.mostrarMensaje("Ingrese el ID del usuario");
-        int id = entero();
-        objVentana.mostrarMensaje("Ingrese acceso: 1.Autorizado o 2.Denegado");
-        int op = entero();
-        boolean autorizacion = pedirAutorizacion(op);
-        objVentana.mostrarMensaje("Ingrese el tipo de Usuario");
-        String tipo = objVentana.pedirString();
-        Usuario agregar = new Usuario(id, autorizacion, tipo);
-        objHashTable.agregarUsuario(agregar);
+    public void signIn() {
+        view.showMessage("--Ingresando Usuariuo--");
+        view.showMessage("Ingrese el ID del usuario");
+        int id = Controlador.this.checkInteger();
+        view.showMessage("Ingrese acceso: 1.Autorizado o 2.Denegado");
+        int op = Controlador.this.checkInteger();
+        boolean autorizacion = askAuthorization(op);
+        view.showMessage("Ingrese el tipo de Usuario");
+        String tipo = view.askNext();
+        User agregar = new User(id, autorizacion, tipo);
+        userHashtable.addUser(agregar);
+    }//signIn
 
-    }
-
-    public boolean pedirAutorizacion(int op) {
+    public boolean askAuthorization(int op) {
         int val = op;
         boolean acceso = false;
         do {
@@ -563,106 +739,115 @@ public class Controlador {
 
         } while (op != 1 && op != 2);
         return acceso;
-    }
+    }//askAuthorization
 
-    public void validar() {
-        objVentana.mostrarMensaje("--Validando acceso--");
-        objVentana.mostrarMensaje("Ingrese ID del usuario");
-        int id = entero();
-        if (objHashTable.getUsuarios().isEmpty()) {
-            objVentana.mostrarMensaje("Lista vacia");
+    public void validate() {
+        view.showMessage("--Validando acceso--");
+        view.showMessage("Ingrese ID del usuario");
+        int id = Controlador.this.checkInteger();
+        if (userHashtable.getUsers().isEmpty()) {
+            view.showMessage("Lista vacia");
         } else {
-            if (objHashTable.obtenerUsuario(id) == null) {
-                objVentana.mostrarMensaje("Usiario con ID " + id + " no esta en el sistema");
+            if (userHashtable.getUser(id) == null) {
+                view.showMessage("Usiario con ID " + id + " no esta en el sistema");
             } else {
-                objVentana.mostrarMensaje("Usuario: " + objHashTable.obtenerUsuario(id).toString());
+                view.showMessage("Usuario: " + userHashtable.getUser(id).toString());
             }
         }
-    }
+    }//validate
 
-    public void calcularRutas() {
-        objVentana.calcularRutas();
-        objVentana.mostrarMensaje("Ingrese la estación de inicio:");
-        String inicio = objVentana.pedirString();
-        objVentana.mostrarMensaje("Ingrese la estación de destino: ");
-        String fin = objVentana.pedirString();
-        objVentana.mostrarMensaje("");
-        objVentana.mostrarMensaje(objGrafoRutas.mostrarRutaMasCorta(inicio, fin));
-        objVentana.mostrarMensaje(" ");
-    }
+    public void calculateRoutes() {//TODO: Delete when refactored to GUI
+        view.showMessage("Ingrese la estación de inicio:");
+        String inicio = view.askNext();
+        view.showMessage("Ingrese la estación de destino: ");
+        String fin = view.askNext();
+        view.showMessage("");
+        view.showMessage(RouteGraphMap.showShorterRoute(inicio, fin));
+        view.showMessage(" ");
+    }//calcularRutas
 
-    public void precargarDatos() {
+    public void guardarDatos() {
+        //TODO: Futura implementación para DB
+    }//guardarDatos
+
+    public void salir() {
+        //if(save) guardarDatos();
+        //view.showMessage("Data saved");
+        System.exit(0);
+    }//salir
+
+    public void preloadData() {
 
         //Datos precargados de estacion
-        Estacion a1 = new Estacion("Ricaurte", 1000, 500, null, "Moderada", true);
-        objListaEstacion.agregar(a1);
-        Estacion a2 = new Estacion("Terminal", 600, 700, null, "Normal", true);
-        objListaEstacion.agregar(a2);
-        Estacion a3 = new Estacion("Tunal", 200, 400, null, "Alta", true);
-        objListaEstacion.agregar(a3);
-        Estacion a4 = new Estacion("ElDorado", 300, 600, null, "Normal", true);
-        objListaEstacion.agregar(a4);
-        Estacion a5 = new Estacion("Norte", 150, 200, null, "Saturada", true);
-        objListaEstacion.agregar(a5);
-        Estacion a6 = new Estacion("Jimenez", 400, 200, null, "Normal", true);
-        objListaEstacion.agregar(a6);
+        Station a1 = new Station("Ricaurte", 1000, 500, Saturation.MODERADA, Operation.EN_FUNCIONAMIENTO);
+        stationList.addStation(a1);
+        Station a2 = new Station("Terminal", 600, 700, Saturation.BAJA, Operation.EN_FUNCIONAMIENTO);
+        stationList.addStation(a2);
+        Station a3 = new Station("Tunal", 200, 400, Saturation.MODERADA, Operation.EN_FUNCIONAMIENTO);
+        stationList.addStation(a3);
+        Station a4 = new Station("El Dorado", 300, 600, Saturation.NORMAL, Operation.EN_FUNCIONAMIENTO);
+        stationList.addStation(a4);
+        Station a5 = new Station("Norte", 150, 200, Saturation.NORMAL, Operation.EN_FUNCIONAMIENTO);
+        stationList.addStation(a5);
+        Station a6 = new Station("Jiménez", 400, 200, Saturation.ALTA, Operation.EN_FUNCIONAMIENTO);
+        stationList.addStation(a6);
 
         //Datos de rutas precargados
-        Ruta r1 = new Ruta("P20", "Ricaute", "Sur", 80);
-        objListaEnlazada.insertFinal(r1);
-        a1.addListaConexas(r1);
-        Ruta r2 = new Ruta("M20", "Sur", "Ricaute", 80);
-        objListaEnlazada.insertFinal(r2);
-        a2.addListaConexas(r2);
-        Ruta r3 = new Ruta("T30", "Terminal", "Centro", 75);
-        objListaEnlazada.insertFinal(r3);
-        a3.addListaConexas(r3);
-        Ruta r4 = new Ruta("T40", "Centro", "Terminal", 75);
-        objListaEnlazada.insertFinal(r4);
-        a4.addListaConexas(r4);
-        Ruta r5 = new Ruta("P10", "Ricaute", "Centro", 90);
-        objListaEnlazada.insertFinal(r5);
-        a1.addListaConexas(r5);
-        Ruta r6 = new Ruta("P50", "Sur", "Terminal", 70);
-        objListaEnlazada.insertFinal(r6);
-        a1.addListaConexas(r6);
+        Route r1 = new Route("P20", "Ricaute", "Sur", 80);
+        routesLinkedList.insertRoute(r1);
+        a1.addRelatedList(r1);
+        Route r2 = new Route("M20", "Sur", "Ricaute", 80);
+        routesLinkedList.insertRoute(r2);
+        a2.addRelatedList(r2);
+        Route r3 = new Route("T30", "Terminal", "Centro", 75);
+        routesLinkedList.insertRoute(r3);
+        a3.addRelatedList(r3);
+        Route r4 = new Route("T40", "Centro", "Terminal", 75);
+        routesLinkedList.insertRoute(r4);
+        a4.addRelatedList(r4);
+        Route r5 = new Route("P10", "Ricaute", "Centro", 90);
+        routesLinkedList.insertRoute(r5);
+        a1.addRelatedList(r5);
+        Route r6 = new Route("P50", "Sur", "Terminal", 70);
+        routesLinkedList.insertRoute(r6);
+        a1.addRelatedList(r6);
 
         //Datos de Buse precargados
         Bus b1 = new Bus(23, 200, null, "12Pl", "2014", 100);
-        objDiccionario.agregarBus(b1);
-        b1.setRutaAsignada(r2.getNombreRuta());
+        busHashMap.addBus(b1);
+        b1.setRouteAssigned(r2.getName());
         Bus b2 = new Bus(12, 250, null, "25Tk", "2017", 110);
-        b2.setRutaAsignada(r4.getNombreRuta());
-        objDiccionario.agregarBus(b2);
+        b2.setRouteAssigned(r4.getName());
+        busHashMap.addBus(b2);
 
         //Datos de usuaios precargados
-        Usuario u1 = new Usuario(34, true, "Pasajero");
-        objHashTable.agregarUsuario(u1);
-        Usuario u2 = new Usuario(45, false, "Pasajero");
-        objHashTable.agregarUsuario(u2);
+        User u1 = new User(34, true, "Pasajero");
+        userHashtable.addUser(u1);
+        User u2 = new User(45, false, "Pasajero");
+        userHashtable.addUser(u2);
         //Datos precargados del grafo
-        objGrafoRutas.agregarArista("Eldorado", "Ricaurte");
-        objGrafoRutas.agregarArista("Ricaurte", "Jimenez");
-        objGrafoRutas.agregarArista("Jimenez", "Tunal");
-        objGrafoRutas.agregarArista("Jimenez", "Norte");
-        objGrafoRutas.agregarArista("Norte", "Terminal");
-    }
+        RouteGraphMap.addEdge("Eldorado", "Ricaurte");
+        RouteGraphMap.addEdge("Ricaurte", "Jiménez");
+        RouteGraphMap.addEdge("Jiménez", "Tunal");
+        RouteGraphMap.addEdge("Jiménez", "Norte");
+        RouteGraphMap.addEdge("Norte", "Terminal");
+    }//preloadData
 
-    public int entero() {
+    public int checkInteger() {
         //Método sobrecargado para que no explote todo el codigo xd
+        //Cuando se implemente toda la vista borrar.
         int numero = -1;
 
         try {
-            numero = objVentana.pedirEntero();
-            objVentana.mostrarMensaje("Usando metodo entero() sobrecargado para la consola");
+            numero = view.askInteger();
+            view.showMessage("Usando metodo entero() sobrecargado para la consola");
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }
-
         return numero;
-    }
+    }//entero
 
-    public Integer entero(JTextField txt) {
+    public Integer checkInteger(JTextField txt) {
 
         String texto = txt.getText().trim();
 
@@ -673,9 +858,9 @@ public class Controlador {
         try {
             return Integer.valueOf(texto);
         } catch (NumberFormatException e) {
-            objVentana.mostrarMensaje("Datos de entrada invalidos. Ingresar entradas validas");
+            view.showMessage("Datos de entrada invalidos. Ingresar entradas validas");
             return null;
         }
-    }
+    }//entero
 
-}
+}//class

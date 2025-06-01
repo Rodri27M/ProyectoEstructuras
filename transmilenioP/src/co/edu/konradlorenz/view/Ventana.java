@@ -13,8 +13,7 @@ public class Ventana {
     }
     
     public void menu(){
-        System.out.println("1. Monitoreo"
-                + "\n2. Gestion Estacion"
+        System.out.println("2. Gestion Estacion"
                 + "\n3. Gestion de Flota"
                 + "\n4. Calcular rutas"//Grafos(En evaulacion)
                 + "\n5. Gestion de rutas"

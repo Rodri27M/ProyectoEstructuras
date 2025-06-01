@@ -11,10 +11,47 @@ import javax.swing.JTextField;
 public class Principal extends javax.swing.JFrame {
 
     Controlador ctrl;
-    
+
     public Principal(Controlador ctrl) {
         this.ctrl = ctrl;
         initComponents();
+    }
+    
+    //Specific methods
+    
+    public void switchCard(int cardNum, int num){
+        JPanel card = (cardNum==1) ? HomeCardLayout1 : HomeCardLayout2;
+        
+        java.awt.CardLayout cl = (java.awt.CardLayout) (card.getLayout());
+        cl.show(card, "card" + String.valueOf(num));
+    }
+
+    public void setListaEstaciones(String[] nombres) {
+        lstListaEstaciones1.setListData(nombres);
+        lstListaEstaciones2.setListData(nombres);
+    }
+    
+    public void setListaAlertas(String[] alertas) {
+        lstListAlertas.setListData(alertas);
+    }
+    
+    public void setListaDeParadasPorEstacion(String[] rutas) {
+        lstListaDeParadasPorEstacion.setListData(rutas);
+    }
+    
+    public void setListaDeEstadoDeEstaciones(String[] rutas) {
+        lstListaDeEstadoDeLasEstaciones.setListData(rutas);
+    }
+    
+    //Gett & Sett
+    
+    public Controlador getCtrl() {
+
+        return ctrl;
+    }
+
+    public void setCtrl(Controlador ctrl) {
+        this.ctrl = ctrl;
     }
 
     public JPanel getHomeCardLayout1() {
@@ -297,6 +334,22 @@ public class Principal extends javax.swing.JFrame {
         this.jLabel1 = jLabel1;
     }
 
+    public JLabel getjLabel10() {
+        return jLabel10;
+    }
+
+    public void setjLabel10(JLabel jLabel10) {
+        this.jLabel10 = jLabel10;
+    }
+
+    public JLabel getjLabel11() {
+        return jLabel11;
+    }
+
+    public void setjLabel11(JLabel jLabel11) {
+        this.jLabel11 = jLabel11;
+    }
+
     public JLabel getjLabel2() {
         return jLabel2;
     }
@@ -345,12 +398,20 @@ public class Principal extends javax.swing.JFrame {
         this.jLabel7 = jLabel7;
     }
 
-    public JList<String> getjList1() {
-        return jList1;
+    public JLabel getjLabel8() {
+        return jLabel8;
     }
 
-    public void setjList1(JList<String> jList1) {
-        this.jList1 = jList1;
+    public void setjLabel8(JLabel jLabel8) {
+        this.jLabel8 = jLabel8;
+    }
+
+    public JLabel getjLabel9() {
+        return jLabel9;
+    }
+
+    public void setjLabel9(JLabel jLabel9) {
+        this.jLabel9 = jLabel9;
     }
 
     public JScrollPane getjScrollPane1() {
@@ -369,16 +430,68 @@ public class Principal extends javax.swing.JFrame {
         this.jScrollPane2 = jScrollPane2;
     }
 
-    public JList<String> getLstListEstaciones() {
-        return lstListEstaciones;
+    public JScrollPane getjScrollPane3() {
+        return jScrollPane3;
     }
 
-    public void setLstListEstaciones(JList<String> lstListEstaciones) {
-        this.lstListEstaciones = lstListEstaciones;
+    public void setjScrollPane3(JScrollPane jScrollPane3) {
+        this.jScrollPane3 = jScrollPane3;
     }
 
-    public void setListaEstaciones(String[] nombres) {
-        lstListEstaciones.setListData(nombres);
+    public JScrollPane getjScrollPane4() {
+        return jScrollPane4;
+    }
+
+    public void setjScrollPane4(JScrollPane jScrollPane4) {
+        this.jScrollPane4 = jScrollPane4;
+    }
+
+    public JScrollPane getjScrollPane5() {
+        return jScrollPane5;
+    }
+
+    public void setjScrollPane5(JScrollPane jScrollPane5) {
+        this.jScrollPane5 = jScrollPane5;
+    }
+
+    public JList<String> getLstListAlertas() {
+        return lstListAlertas;
+    }
+
+    public void setLstListAlertas(JList<String> lstListAlertas) {
+        this.lstListAlertas = lstListAlertas;
+    }
+
+    public JList<String> getLstListaDeEstadoDeLasEstaciones() {
+        return lstListaDeEstadoDeLasEstaciones;
+    }
+
+    public void setLstListaDeEstadoDeLasEstaciones(JList<String> lstListaDeEstadoDeLasEstaciones) {
+        this.lstListaDeEstadoDeLasEstaciones = lstListaDeEstadoDeLasEstaciones;
+    }
+
+    public JList<String> getLstListaDeParadasPorEstacion() {
+        return lstListaDeParadasPorEstacion;
+    }
+
+    public void setLstListaDeParadasPorEstacion(JList<String> lstListaDeParadasPorEstacion) {
+        this.lstListaDeParadasPorEstacion = lstListaDeParadasPorEstacion;
+    }
+
+    public JList<String> getLstListaEstaciones1() {
+        return lstListaEstaciones1;
+    }
+
+    public void setLstListaEstaciones1(JList<String> lstListaEstaciones1) {
+        this.lstListaEstaciones1 = lstListaEstaciones1;
+    }
+
+    public JList<String> getLstListaEstaciones2() {
+        return lstListaEstaciones2;
+    }
+
+    public void setLstListaEstaciones2(JList<String> lstListaEstaciones2) {
+        this.lstListaEstaciones2 = lstListaEstaciones2;
     }
 
     public JPanel getPnlBlank1() {
@@ -461,14 +574,6 @@ public class Principal extends javax.swing.JFrame {
         this.pnlCalcularRutas1 = pnlCalcularRutas1;
     }
 
-    public JPanel getPnlCalcularRutas2() {
-        return pnlCalcularRutas2;
-    }
-
-    public void setPnlCalcularRutas2(JPanel pnlCalcularRutas2) {
-        this.pnlCalcularRutas2 = pnlCalcularRutas2;
-    }
-
     public JPanel getPnlGeneral() {
         return pnlGeneral;
     }
@@ -493,28 +598,12 @@ public class Principal extends javax.swing.JFrame {
         this.pnlGestionFlota1 = pnlGestionFlota1;
     }
 
-    public JPanel getPnlGestionFlota2() {
-        return pnlGestionFlota2;
-    }
-
-    public void setPnlGestionFlota2(JPanel pnlGestionFlota2) {
-        this.pnlGestionFlota2 = pnlGestionFlota2;
-    }
-
     public JPanel getPnlGestionRutas1() {
         return pnlGestionRutas1;
     }
 
     public void setPnlGestionRutas1(JPanel pnlGestionRutas1) {
         this.pnlGestionRutas1 = pnlGestionRutas1;
-    }
-
-    public JPanel getPnlGestionRutas2() {
-        return pnlGestionRutas2;
-    }
-
-    public void setPnlGestionRutas2(JPanel pnlGestionRutas2) {
-        this.pnlGestionRutas2 = pnlGestionRutas2;
     }
 
     public JPanel getPnlMenuIzquierda() {
@@ -549,20 +638,36 @@ public class Principal extends javax.swing.JFrame {
         this.pnlValidarAcceso1 = pnlValidarAcceso1;
     }
 
-    public JPanel getPnlValidarAcceso2() {
-        return pnlValidarAcceso2;
-    }
-
-    public void setPnlValidarAcceso2(JPanel pnlValidarAcceso2) {
-        this.pnlValidarAcceso2 = pnlValidarAcceso2;
-    }
-
     public JPanel getPnlVerAlertas() {
         return pnlVerAlertas;
     }
 
     public void setPnlVerAlertas(JPanel pnlVerAlertas) {
         this.pnlVerAlertas = pnlVerAlertas;
+    }
+
+    public JPanel getPnlVerEstadoDeLasEstaciones() {
+        return pnlVerEstadoDeLasEstaciones;
+    }
+
+    public void setPnlVerEstadoDeLasEstaciones(JPanel pnlVerEstadoDeLasEstaciones) {
+        this.pnlVerEstadoDeLasEstaciones = pnlVerEstadoDeLasEstaciones;
+    }
+
+    public JPanel getPnlVerListaDeEstaciones() {
+        return pnlVerListaDeEstaciones;
+    }
+
+    public void setPnlVerListaDeEstaciones(JPanel pnlVerListaDeEstaciones) {
+        this.pnlVerListaDeEstaciones = pnlVerListaDeEstaciones;
+    }
+
+    public JPanel getPnlVerParadasPorEstacion() {
+        return pnlVerParadasPorEstacion;
+    }
+
+    public void setPnlVerParadasPorEstacion(JPanel pnlVerParadasPorEstacion) {
+        this.pnlVerParadasPorEstacion = pnlVerParadasPorEstacion;
     }
 
     public JTextField getTxtDestino() {
@@ -584,11 +689,7 @@ public class Principal extends javax.swing.JFrame {
     public JTextField getTxtPuntoInicio() {
         return txtPuntoInicio;
     }
-
-    public void setTxtPuntoInicio(JTextField txtPuntoInicio) {
-        this.txtPuntoInicio = txtPuntoInicio;
-    }
-
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -652,18 +753,27 @@ public class Principal extends javax.swing.JFrame {
         pnlRegistrarNumPersonas = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        lstListEstaciones = new javax.swing.JList<>();
+        lstListaEstaciones1 = new javax.swing.JList<>();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         txtNumeroPersonas = new javax.swing.JTextField();
         btnRegistrarNumeroPersonas = new javax.swing.JButton();
         pnlVerAlertas = new javax.swing.JPanel();
+        jLabel8 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList<>();
-        pnlGestionFlota2 = new javax.swing.JPanel();
-        pnlGestionRutas2 = new javax.swing.JPanel();
-        pnlCalcularRutas2 = new javax.swing.JPanel();
-        pnlValidarAcceso2 = new javax.swing.JPanel();
+        lstListAlertas = new javax.swing.JList<>();
+        pnlVerListaDeEstaciones = new javax.swing.JPanel();
+        jLabel9 = new javax.swing.JLabel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        lstListaEstaciones2 = new javax.swing.JList<>();
+        pnlVerParadasPorEstacion = new javax.swing.JPanel();
+        jLabel10 = new javax.swing.JLabel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        lstListaDeParadasPorEstacion = new javax.swing.JList<>();
+        pnlVerEstadoDeLasEstaciones = new javax.swing.JPanel();
+        jLabel11 = new javax.swing.JLabel();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        lstListaDeEstadoDeLasEstaciones = new javax.swing.JList<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -680,6 +790,11 @@ public class Principal extends javax.swing.JFrame {
 
         imgTM128.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         imgTM128.setIcon(new javax.swing.ImageIcon(getClass().getResource("/co/edu/konradlorenz/view/img/tm-logo-128x128.png"))); // NOI18N
+        imgTM128.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                imgTM128MouseClicked(evt);
+            }
+        });
         pnlMenuIzquierda.add(imgTM128, java.awt.BorderLayout.CENTER);
 
         pnlBotones.setBackground(new java.awt.Color(180, 0, 0));
@@ -797,13 +912,14 @@ public class Principal extends javax.swing.JFrame {
 
         pnlGeneral.add(pnlMenuIzquierda, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 300, 720));
 
+        HomeCardLayout1.setToolTipText("");
         HomeCardLayout1.setLayout(new java.awt.CardLayout());
 
         pnlBlank1.setBackground(new java.awt.Color(200, 0, 0));
         pnlBlank1.setMaximumSize(new java.awt.Dimension(680, 720));
         pnlBlank1.setMinimumSize(new java.awt.Dimension(680, 720));
         pnlBlank1.setPreferredSize(new java.awt.Dimension(680, 720));
-        HomeCardLayout1.add(pnlBlank1, "card8");
+        HomeCardLayout1.add(pnlBlank1, "card1");
 
         pnlMonitoreo1.setBackground(new java.awt.Color(200, 0, 0));
         pnlMonitoreo1.setMaximumSize(new java.awt.Dimension(680, 720));
@@ -1300,7 +1416,7 @@ public class Principal extends javax.swing.JFrame {
         pnlBlank2.setMaximumSize(new java.awt.Dimension(680, 720));
         pnlBlank2.setMinimumSize(new java.awt.Dimension(680, 720));
         pnlBlank2.setPreferredSize(new java.awt.Dimension(680, 720));
-        HomeCardLayout2.add(pnlBlank2, "card8");
+        HomeCardLayout2.add(pnlBlank2, "card1");
 
         pnlRegistrarNumPersonas.setBackground(new java.awt.Color(213, 0, 0));
         pnlRegistrarNumPersonas.setMaximumSize(new java.awt.Dimension(680, 720));
@@ -1320,13 +1436,15 @@ public class Principal extends javax.swing.JFrame {
         jScrollPane1.setAlignmentY(0.0F);
         jScrollPane1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
-        lstListEstaciones.setBackground(new java.awt.Color(180, 0, 0));
-        lstListEstaciones.setFont(new java.awt.Font("Lucida Fax", 0, 14)); // NOI18N
-        lstListEstaciones.setForeground(new java.awt.Color(255, 255, 255));
-        lstListEstaciones.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        lstListEstaciones.setSelectionBackground(new java.awt.Color(240, 0, 0));
-        lstListEstaciones.setSelectionForeground(new java.awt.Color(255, 255, 255));
-        jScrollPane1.setViewportView(lstListEstaciones);
+        lstListaEstaciones1.setBackground(new java.awt.Color(180, 0, 0));
+        lstListaEstaciones1.setFont(new java.awt.Font("Lucida Fax", 0, 14)); // NOI18N
+        lstListaEstaciones1.setForeground(new java.awt.Color(255, 255, 255));
+        lstListaEstaciones1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lstListaEstaciones1.setFocusable(false);
+        lstListaEstaciones1.setRequestFocusEnabled(false);
+        lstListaEstaciones1.setSelectionBackground(new java.awt.Color(240, 0, 0));
+        lstListaEstaciones1.setSelectionForeground(new java.awt.Color(255, 255, 255));
+        jScrollPane1.setViewportView(lstListaEstaciones1);
 
         pnlRegistrarNumPersonas.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 150, 270, 520));
 
@@ -1334,13 +1452,13 @@ public class Principal extends javax.swing.JFrame {
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel6.setText(" Ingrese número de personas");
-        pnlRegistrarNumPersonas.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 150, 290, 50));
+        pnlRegistrarNumPersonas.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 150, 280, 50));
 
         jLabel7.setFont(new java.awt.Font("Lucida Fax", 1, 18)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel7.setText("actualmente en la estación");
-        pnlRegistrarNumPersonas.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 200, 290, 50));
+        pnlRegistrarNumPersonas.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 190, 280, 50));
 
         txtNumeroPersonas.setBackground(new java.awt.Color(255, 255, 255));
         txtNumeroPersonas.setFont(new java.awt.Font("Lucida Fax", 1, 14)); // NOI18N
@@ -1351,7 +1469,7 @@ public class Principal extends javax.swing.JFrame {
                 txtNumeroPersonasActionPerformed(evt);
             }
         });
-        pnlRegistrarNumPersonas.add(txtNumeroPersonas, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 300, 150, -1));
+        pnlRegistrarNumPersonas.add(txtNumeroPersonas, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 290, 160, -1));
 
         btnRegistrarNumeroPersonas.setBackground(new java.awt.Color(180, 0, 0));
         btnRegistrarNumeroPersonas.setFont(new java.awt.Font("Lucida Fax", 1, 14)); // NOI18N
@@ -1366,7 +1484,7 @@ public class Principal extends javax.swing.JFrame {
                 btnRegistrarNumeroPersonasActionPerformed(evt);
             }
         });
-        pnlRegistrarNumPersonas.add(btnRegistrarNumeroPersonas, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 380, 150, 30));
+        pnlRegistrarNumPersonas.add(btnRegistrarNumeroPersonas, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 370, 160, 30));
 
         HomeCardLayout2.add(pnlRegistrarNumPersonas, "card2");
 
@@ -1376,40 +1494,118 @@ public class Principal extends javax.swing.JFrame {
         pnlVerAlertas.setPreferredSize(new java.awt.Dimension(680, 720));
         pnlVerAlertas.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jList1.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
-        jScrollPane2.setViewportView(jList1);
+        jLabel8.setFont(new java.awt.Font("Lucida Fax", 1, 18)); // NOI18N
+        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel8.setText("Lista de Alertas");
+        pnlVerAlertas.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 50, 480, 50));
 
-        pnlVerAlertas.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 100, 480, 570));
+        lstListAlertas.setBackground(new java.awt.Color(180, 0, 0));
+        lstListAlertas.setFont(new java.awt.Font("Lucida Fax", 0, 14)); // NOI18N
+        lstListAlertas.setForeground(new java.awt.Color(255, 255, 255));
+        lstListAlertas.setFocusable(false);
+        lstListAlertas.setRequestFocusEnabled(false);
+        lstListAlertas.setSelectionBackground(new java.awt.Color(240, 0, 0));
+        lstListAlertas.setSelectionForeground(new java.awt.Color(255, 255, 255));
+        jScrollPane2.setViewportView(lstListAlertas);
+
+        pnlVerAlertas.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 150, 480, 520));
 
         HomeCardLayout2.add(pnlVerAlertas, "card3");
 
-        pnlGestionFlota2.setBackground(new java.awt.Color(213, 0, 0));
-        pnlGestionFlota2.setMaximumSize(new java.awt.Dimension(680, 720));
-        pnlGestionFlota2.setMinimumSize(new java.awt.Dimension(680, 720));
-        pnlGestionFlota2.setPreferredSize(new java.awt.Dimension(680, 720));
-        HomeCardLayout2.add(pnlGestionFlota2, "card4");
+        pnlVerListaDeEstaciones.setBackground(new java.awt.Color(213, 0, 0));
+        pnlVerListaDeEstaciones.setMaximumSize(new java.awt.Dimension(680, 720));
+        pnlVerListaDeEstaciones.setMinimumSize(new java.awt.Dimension(680, 720));
+        pnlVerListaDeEstaciones.setPreferredSize(new java.awt.Dimension(680, 720));
+        pnlVerListaDeEstaciones.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        pnlGestionRutas2.setBackground(new java.awt.Color(213, 0, 0));
-        pnlGestionRutas2.setMaximumSize(new java.awt.Dimension(680, 720));
-        pnlGestionRutas2.setMinimumSize(new java.awt.Dimension(680, 720));
-        pnlGestionRutas2.setPreferredSize(new java.awt.Dimension(680, 720));
-        HomeCardLayout2.add(pnlGestionRutas2, "card5");
+        jLabel9.setFont(new java.awt.Font("Lucida Fax", 1, 18)); // NOI18N
+        jLabel9.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel9.setText("Lista de Estaciones");
+        pnlVerListaDeEstaciones.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 50, 580, 50));
 
-        pnlCalcularRutas2.setBackground(new java.awt.Color(213, 0, 0));
-        pnlCalcularRutas2.setMaximumSize(new java.awt.Dimension(680, 720));
-        pnlCalcularRutas2.setMinimumSize(new java.awt.Dimension(680, 720));
-        pnlCalcularRutas2.setPreferredSize(new java.awt.Dimension(680, 720));
-        HomeCardLayout2.add(pnlCalcularRutas2, "card6");
+        jScrollPane3.setBackground(new java.awt.Color(180, 0, 0));
+        jScrollPane3.setForeground(new java.awt.Color(255, 255, 255));
+        jScrollPane3.setAlignmentX(0.0F);
+        jScrollPane3.setAlignmentY(0.0F);
+        jScrollPane3.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
-        pnlValidarAcceso2.setBackground(new java.awt.Color(213, 0, 0));
-        pnlValidarAcceso2.setMaximumSize(new java.awt.Dimension(680, 720));
-        pnlValidarAcceso2.setMinimumSize(new java.awt.Dimension(680, 720));
-        pnlValidarAcceso2.setPreferredSize(new java.awt.Dimension(680, 720));
-        HomeCardLayout2.add(pnlValidarAcceso2, "card7");
+        lstListaEstaciones2.setBackground(new java.awt.Color(180, 0, 0));
+        lstListaEstaciones2.setFont(new java.awt.Font("Lucida Fax", 0, 14)); // NOI18N
+        lstListaEstaciones2.setForeground(new java.awt.Color(255, 255, 255));
+        lstListaEstaciones2.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        lstListaEstaciones2.setFocusable(false);
+        lstListaEstaciones2.setRequestFocusEnabled(false);
+        lstListaEstaciones2.setSelectionBackground(new java.awt.Color(240, 0, 0));
+        lstListaEstaciones2.setSelectionForeground(new java.awt.Color(255, 255, 255));
+        jScrollPane3.setViewportView(lstListaEstaciones2);
+
+        pnlVerListaDeEstaciones.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 150, 480, 520));
+
+        HomeCardLayout2.add(pnlVerListaDeEstaciones, "card4");
+
+        pnlVerParadasPorEstacion.setBackground(new java.awt.Color(213, 0, 0));
+        pnlVerParadasPorEstacion.setMaximumSize(new java.awt.Dimension(680, 720));
+        pnlVerParadasPorEstacion.setMinimumSize(new java.awt.Dimension(680, 720));
+        pnlVerParadasPorEstacion.setPreferredSize(new java.awt.Dimension(680, 720));
+        pnlVerParadasPorEstacion.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel10.setFont(new java.awt.Font("Lucida Fax", 1, 18)); // NOI18N
+        jLabel10.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel10.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel10.setText("Lista de Paradas por Estación");
+        pnlVerParadasPorEstacion.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 50, 580, 50));
+
+        jScrollPane4.setBackground(new java.awt.Color(180, 0, 0));
+        jScrollPane4.setForeground(new java.awt.Color(255, 255, 255));
+        jScrollPane4.setAlignmentX(0.0F);
+        jScrollPane4.setAlignmentY(0.0F);
+        jScrollPane4.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+
+        lstListaDeParadasPorEstacion.setBackground(new java.awt.Color(180, 0, 0));
+        lstListaDeParadasPorEstacion.setFont(new java.awt.Font("Lucida Fax", 0, 14)); // NOI18N
+        lstListaDeParadasPorEstacion.setForeground(new java.awt.Color(255, 255, 255));
+        lstListaDeParadasPorEstacion.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        lstListaDeParadasPorEstacion.setFocusable(false);
+        lstListaDeParadasPorEstacion.setSelectionBackground(new java.awt.Color(240, 0, 0));
+        lstListaDeParadasPorEstacion.setSelectionForeground(new java.awt.Color(255, 255, 255));
+        jScrollPane4.setViewportView(lstListaDeParadasPorEstacion);
+
+        pnlVerParadasPorEstacion.add(jScrollPane4, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 150, 480, 520));
+
+        HomeCardLayout2.add(pnlVerParadasPorEstacion, "card5");
+
+        pnlVerEstadoDeLasEstaciones.setBackground(new java.awt.Color(213, 0, 0));
+        pnlVerEstadoDeLasEstaciones.setMaximumSize(new java.awt.Dimension(680, 720));
+        pnlVerEstadoDeLasEstaciones.setMinimumSize(new java.awt.Dimension(680, 720));
+        pnlVerEstadoDeLasEstaciones.setPreferredSize(new java.awt.Dimension(680, 720));
+        pnlVerEstadoDeLasEstaciones.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel11.setFont(new java.awt.Font("Lucida Fax", 1, 18)); // NOI18N
+        jLabel11.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel11.setText("Lista de Estado de las Estaciones");
+        pnlVerEstadoDeLasEstaciones.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 50, 580, 50));
+
+        jScrollPane5.setBackground(new java.awt.Color(180, 0, 0));
+        jScrollPane5.setForeground(new java.awt.Color(255, 255, 255));
+        jScrollPane5.setAlignmentX(0.0F);
+        jScrollPane5.setAlignmentY(0.0F);
+        jScrollPane5.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+
+        lstListaDeEstadoDeLasEstaciones.setBackground(new java.awt.Color(180, 0, 0));
+        lstListaDeEstadoDeLasEstaciones.setFont(new java.awt.Font("Lucida Fax", 0, 14)); // NOI18N
+        lstListaDeEstadoDeLasEstaciones.setForeground(new java.awt.Color(255, 255, 255));
+        lstListaDeEstadoDeLasEstaciones.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        lstListaDeEstadoDeLasEstaciones.setFocusable(false);
+        lstListaDeEstadoDeLasEstaciones.setSelectionBackground(new java.awt.Color(240, 0, 0));
+        lstListaDeEstadoDeLasEstaciones.setSelectionForeground(new java.awt.Color(255, 255, 255));
+        jScrollPane5.setViewportView(lstListaDeEstadoDeLasEstaciones);
+
+        pnlVerEstadoDeLasEstaciones.add(jScrollPane5, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 150, 480, 520));
+
+        HomeCardLayout2.add(pnlVerEstadoDeLasEstaciones, "card6");
 
         pnlGeneral.add(HomeCardLayout2, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 0, 680, 720));
 
@@ -1419,33 +1615,33 @@ public class Principal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnMonitoreoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMonitoreoActionPerformed
-        java.awt.CardLayout cl = (java.awt.CardLayout)(HomeCardLayout1.getLayout());
-        cl.show(HomeCardLayout1, "card2");
+        switchCard(1,2);
+        switchCard(2,1);
     }//GEN-LAST:event_btnMonitoreoActionPerformed
 
     private void btnGestionEstacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGestionEstacionActionPerformed
-        java.awt.CardLayout cl = (java.awt.CardLayout)(HomeCardLayout1.getLayout());
-        cl.show(HomeCardLayout1, "card3");
+        switchCard(1,3);
+        switchCard(2,1);
     }//GEN-LAST:event_btnGestionEstacionActionPerformed
 
     private void btnGestionFlotaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGestionFlotaActionPerformed
-        java.awt.CardLayout cl = (java.awt.CardLayout)(HomeCardLayout1.getLayout());
-        cl.show(HomeCardLayout1, "card4");
+        switchCard(1,4);
+        switchCard(2,1);
     }//GEN-LAST:event_btnGestionFlotaActionPerformed
 
     private void btnGestionRutasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGestionRutasActionPerformed
-        java.awt.CardLayout cl = (java.awt.CardLayout)(HomeCardLayout1.getLayout());
-        cl.show(HomeCardLayout1, "card5");
+        switchCard(1,5);
+        switchCard(2,1);
     }//GEN-LAST:event_btnGestionRutasActionPerformed
 
     private void btnCalcularRutasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCalcularRutasActionPerformed
-        java.awt.CardLayout cl = (java.awt.CardLayout)(HomeCardLayout1.getLayout());
-        cl.show(HomeCardLayout1, "card6");
+        switchCard(1,6);
+        switchCard(2,1);
     }//GEN-LAST:event_btnCalcularRutasActionPerformed
 
     private void btnValidarAccesoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnValidarAccesoActionPerformed
-        java.awt.CardLayout cl = (java.awt.CardLayout)(HomeCardLayout1.getLayout());
-        cl.show(HomeCardLayout1, "card7");
+        switchCard(1,7);
+        switchCard(2,1);
     }//GEN-LAST:event_btnValidarAccesoActionPerformed
 
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
@@ -1454,26 +1650,28 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSalirActionPerformed
 
     private void btnRegistrarPersonasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarPersonasActionPerformed
-        java.awt.CardLayout cl = (java.awt.CardLayout)(HomeCardLayout2.getLayout());
-        cl.show(HomeCardLayout2, "card2");
-        ctrl.mostrarEstacionesEnLista();
+        switchCard(2,2);
+        ctrl.mostrarListaDeEstaciones();
     }//GEN-LAST:event_btnRegistrarPersonasActionPerformed
 
     private void btnVerAlertasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerAlertasActionPerformed
-        java.awt.CardLayout cl = (java.awt.CardLayout)(HomeCardLayout2.getLayout());
-        cl.show(HomeCardLayout2, "card3");
+        switchCard(2,3);
+        ctrl.mostrarListaDeAlertas();
     }//GEN-LAST:event_btnVerAlertasActionPerformed
 
     private void btnVerListaEstacionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerListaEstacionesActionPerformed
-        // TODO add your handling code here:
+        switchCard(2,4);
+        ctrl.mostrarListaDeEstaciones();
     }//GEN-LAST:event_btnVerListaEstacionesActionPerformed
 
     private void btnVerParadasPorEstacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerParadasPorEstacionActionPerformed
-        // TODO add your handling code here:
+        switchCard(2,5);
+        ctrl.mostrarParadasPorEstacion();
     }//GEN-LAST:event_btnVerParadasPorEstacionActionPerformed
 
     private void btnVerEstadoDeEstacionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerEstadoDeEstacionesActionPerformed
-        // TODO add your handling code here:
+        switchCard(2,6);
+        ctrl.mostrarEstadoDeEstaciones();
     }//GEN-LAST:event_btnVerEstadoDeEstacionesActionPerformed
 
     private void btnAgregarEstacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarEstacionActionPerformed
@@ -1561,8 +1759,14 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_txtNumeroPersonasActionPerformed
 
     private void btnRegistrarNumeroPersonasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarNumeroPersonasActionPerformed
-        ctrl.registrarCantidad();
+        ctrl.registrarCantidadDePersonas();
     }//GEN-LAST:event_btnRegistrarNumeroPersonasActionPerformed
+
+    private void imgTM128MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_imgTM128MouseClicked
+        System.out.println("Loading blank cards");
+        switchCard(1,1);
+        switchCard(2,1);
+    }//GEN-LAST:event_imgTM128MouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel HomeCardLayout1;
@@ -1600,16 +1804,26 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JButton btnVerParadasPorEstacion;
     private javax.swing.JLabel imgTM128;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JList<String> jList1;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JList<String> lstListEstaciones;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JList<String> lstListAlertas;
+    private javax.swing.JList<String> lstListaDeEstadoDeLasEstaciones;
+    private javax.swing.JList<String> lstListaDeParadasPorEstacion;
+    private javax.swing.JList<String> lstListaEstaciones1;
+    private javax.swing.JList<String> lstListaEstaciones2;
     private javax.swing.JPanel pnlBlank1;
     private javax.swing.JPanel pnlBlank2;
     private javax.swing.JPanel pnlBotones;
@@ -1620,19 +1834,18 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JPanel pnlBotones5;
     private javax.swing.JPanel pnlBotones6;
     private javax.swing.JPanel pnlCalcularRutas1;
-    private javax.swing.JPanel pnlCalcularRutas2;
     private javax.swing.JPanel pnlGeneral;
     private javax.swing.JPanel pnlGestionEstacion1;
     private javax.swing.JPanel pnlGestionFlota1;
-    private javax.swing.JPanel pnlGestionFlota2;
     private javax.swing.JPanel pnlGestionRutas1;
-    private javax.swing.JPanel pnlGestionRutas2;
     private javax.swing.JPanel pnlMenuIzquierda;
     private javax.swing.JPanel pnlMonitoreo1;
     private javax.swing.JPanel pnlRegistrarNumPersonas;
     private javax.swing.JPanel pnlValidarAcceso1;
-    private javax.swing.JPanel pnlValidarAcceso2;
     private javax.swing.JPanel pnlVerAlertas;
+    private javax.swing.JPanel pnlVerEstadoDeLasEstaciones;
+    private javax.swing.JPanel pnlVerListaDeEstaciones;
+    private javax.swing.JPanel pnlVerParadasPorEstacion;
     private javax.swing.JTextField txtDestino;
     private javax.swing.JTextField txtNumeroPersonas;
     private javax.swing.JTextField txtPuntoInicio;

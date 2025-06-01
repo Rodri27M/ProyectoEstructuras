@@ -93,8 +93,8 @@ public class Estacion {
            return "No hay rutas conexas";
        }
        while(actual != null){
-           Ruta ruta =(Ruta) actual.getConexa();
-           mostrar += "- Ruta: " + ruta.getNombreRuta() + "| Origen: " + ruta.getOrigen() + " | Destino " + ruta.getDestino();
+           Ruta ruta = (Ruta) actual.getConexa();
+           mostrar += " Ruta: " + ruta.getNombreRuta() + " [Origen: " + ruta.getOrigen() + " -> Destino " + ruta.getDestino() +"] |";
            actual = actual.getNext();
         }
        

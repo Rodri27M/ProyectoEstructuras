@@ -32,62 +32,135 @@ public class Controlador {
         principal.setVisible(true);
         principal.setLocationRelativeTo(null);
 
-        objVentana.mostrarMensaje(" ");
-        datosPrecargados();
+        precargarDatos();
+
         int op;
         do {
             objVentana.mostrarMensaje("--MENU PRINCIPAL--");
-            objVentana.mostrarMensaje(" ");
             objVentana.menu();
             op = entero();
             switch (op) {
-                case 1:
-                    monitoreo();
-                    break;
-                case 2:
+                case 2 ->
                     gestionEstacion();
-                    break;
-                case 3:
+                case 3 ->
                     gestionFlota();
-                    break;
-                case 4:
+                case 4 ->
                     calcularRutas();
-                    break;
-                case 5:
+                case 5 ->
                     gentionRutas();
-                    break;
-                case 6:
+                case 6 ->
                     validarAcceso();
-                    break;
-                case 7:
+                case 7 ->
                     objVentana.mostrarMensaje("saliendo del Programa");
-                    break;
-                default:
+                default ->
                     objVentana.mostrarMensaje("Opcion invalida. Por favor, ingresar una de las opciones disponibles.");
             }
         } while (op != 7);
 
     }
 
-    public void monitoreoEstacion() {
-        objVentana.mostrarMensaje("---MONITOREO EN TIPO REAL---");
-        if (objListaEstacion == null || objListaEstacion.getEstacion() == null) {
-            objVentana.mostrarMensaje("No esta inicializada en las listas");
-            return;
-        }
-        if (objListaEstacion.getEstacion().isEmpty()) {
-            objVentana.mostrarMensaje("Lista de estaciones vacia");
-        } else {
-            for (Estacion estacion : objListaEstacion.getEstacion()) {
-                objVentana.mostrarMensaje("Estacion: " + estacion.getNombreEstacion());
-                objVentana.mostrarMensaje("Capacidad de la Estacion: " + estacion.getCapacidadMaxima());
-                objVentana.mostrarMensaje("Flujo de personas: " + estacion.getFlujoPersonas());
-                objVentana.mostrarMensaje("Saturacion: " + estacion.getSaturacion());
-                objVentana.mostrarMensaje("Funcionamiento: " + servicio(estacion.isFuncionamiento()));
-                objVentana.mostrarMensaje(" ");
+    public void registrarCantidadDePersonas() {
 
-            }
+        Integer cantidad = entero(principal.getTxtNumeroPersonas());
+
+        if (cantidad == null) {
+            JOptionPane.showMessageDialog(principal, "Debe ingresar un número de personas", "Transmilenio S.A.", JOptionPane.ERROR_MESSAGE);
+            return; //No continua si está vacío
+        } else if (cantidad < 0) {
+            JOptionPane.showMessageDialog(principal, "El número no debe ser negativo", "Transmilenio S.A.", JOptionPane.ERROR_MESSAGE);
+            return; //No continua si es negativo
         }
+
+        String nombreEstacion = principal.getLstListaEstaciones1().getSelectedValue();
+        Estacion estacion = objListaEstacion.buscarNombre(nombreEstacion);
+
+        if (estacion != null) {
+            estacion.setFlujoPersonas(cantidad);
+            JOptionPane.showMessageDialog(principal, "Número de personas registrado exitosamente", "Transmilenio S.A.", JOptionPane.PLAIN_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(principal, "Debe seleccionar una estación", "Transmilenio S.A.", JOptionPane.ERROR_MESSAGE);
+        }
+
+    }
+
+    public void mostrarListaDeAlertas() {
+        objVentana.mostrarMensaje("Cargando lista de alertas");
+
+        List<Estacion> estaciones = objListaEstacion.getEstacion();
+        List<String> alertas = new ArrayList<>();
+
+        for (int i = 0; i < estaciones.size(); i++) {
+            Estacion estacion = estaciones.get(i);
+
+            alertas.add("> Estación: " + estacion.getNombreEstacion());
+
+            if (estacion.getFlujoPersonas() > estacion.getCapacidadMaxima()) {
+                alertas.add("     Estación llena");
+                alertas.add(" ");
+            } else {
+                alertas.add("     Sin anomalías");
+                alertas.add(" ");
+            }
+
+            String[] alerta = alertas.toArray(String[]::new);
+            principal.setListaAlertas(alerta);
+        }
+    }
+
+    public void mostrarListaDeEstaciones() {
+        objVentana.mostrarMensaje("Cargando lista de estaciones");
+
+        List<Estacion> estaciones = objListaEstacion.getEstacion();
+        String[] nombres = estaciones.stream()
+                .map(Estacion::getNombreEstacion)
+                .toArray(String[]::new);
+        principal.setListaEstaciones(nombres);
+        principal.setListaEstaciones(nombres);
+    }
+
+    public void mostrarParadasPorEstacion() {
+        objVentana.mostrarMensaje("Cargando lista de paradas por estacion");
+
+        List<Estacion> estaciones = objListaEstacion.getEstacion();
+        List<String> rutasList = new ArrayList<>();
+
+        for (Estacion estacion : estaciones) {
+            String conexa = estacion.mostrarRutasConexas();
+            rutasList.add("> Estación: " + estacion.getNombreEstacion());
+            if (conexa != null && !conexa.isEmpty()) {
+                rutasList.add("     Rutas Conexas: ");
+
+                String[] rutasConexas = conexa.split("\\|");
+                for (String ruta : rutasConexas) {
+                    rutasList.add("          " + ruta.trim());
+                }
+
+            } else {
+                rutasList.add("    >> No hay rutas en esta estación");
+            }
+            rutasList.add(" "); // "salto de linea"
+        }
+        String[] rutas = rutasList.toArray(String[]::new);
+        principal.setListaDeParadasPorEstacion(rutas);
+    }
+
+    public void mostrarEstadoDeEstaciones() {
+        objVentana.mostrarMensaje("Cargando lista del estado de las estaciones");
+
+        List<Estacion> estaciones = objListaEstacion.getEstacion();
+        List<String> atributos = new ArrayList<>();
+
+        for (Estacion estacion : estaciones) {
+
+            atributos.add("> Estación: " + estacion.getNombreEstacion());
+            atributos.add("     Capacidad de la Estacion: " + estacion.getCapacidadMaxima());
+            atributos.add("     Flujo de personas: " + estacion.getFlujoPersonas());
+            atributos.add("     Saturacion: " + estacion.getSaturacion());
+            atributos.add("     Funcionamiento: " + servicio(estacion.isFuncionamiento()));
+            atributos.add(" "); // "salto de linea"
+        }
+        String[] monitoreo = atributos.toArray(String[]::new);
+        principal.setListaDeEstadoDeEstaciones(monitoreo);
     }
 
     public String servicio(boolean validar) {
@@ -119,22 +192,17 @@ public class Controlador {
             objVentana.gestionEstacion();
             op = entero();
             switch (op) {
-                case 1:
+                case 1 ->
                     datosEstacion();
-                    break;
-                case 2:
+                case 2 ->
                     eliminarEstacion();
-                    break;
-                case 3:
+                case 3 ->
                     modificarEstacion();
-                    break;
-                case 4:
+                case 4 ->
                     asignarParada();
-                    break;
-                case 5:
+                case 5 ->
                     objVentana.mostrarMensaje("Saliendo del programa");
-                    break;
-                default:
+                default ->
                     objVentana.mostrarMensaje("Ingresar una de las opciones disponibles");
             }
 
@@ -239,28 +307,21 @@ public class Controlador {
             objVentana.flota();
             op = entero();
             switch (op) {
-                case 1:
+                case 1 ->
                     agregarBus();
-                    break;
-                case 2:
+                case 2 ->
                     retirarBus();
-                    break;
-                case 3:
+                case 3 ->
                     accerderBus();
-                    break;
-                case 4:
+                case 4 ->
                     modificarBus();
-                    break;
-                case 5:
+                case 5 ->
                     asignarRuta();
-                    break;
-                case 6:
+                case 6 ->
                     listaBus();
-                    break;
-                case 7:
+                case 7 ->
                     objVentana.mostrarMensaje("Saliendo de gestionar flota");
-                    break;
-                default:
+                default ->
                     objVentana.mostrarMensaje("Opcion Invalida. Por favor, ingresar una de las opciones disponibles");
             }
         } while (op != 7);
@@ -381,25 +442,19 @@ public class Controlador {
             objVentana.gestionRutas();
             op = entero();
             switch (op) {
-                case 1:
+                case 1 ->
                     agregarRuta();
-                    break;
-                case 2:
+                case 2 ->
                     eliminarRuta();
-                    break;
-                case 3:
+                case 3 ->
                     asignarRuta();
-                    break;
-                case 4:
+                case 4 ->
                     modificarRuta();
-                    break;
-                case 5:
+                case 5 ->
                     listaRutas();
-                    break;
-                case 6:
+                case 6 ->
                     objVentana.mostrarMensaje("Saliendo de gestion de rutas");
-                    break;
-                default:
+                default ->
                     objVentana.mostrarMensaje("Opcion invalidad. Por favor, ingresar una de las opciones disponibles");
             }
         } while (op != 6);
@@ -461,21 +516,6 @@ public class Controlador {
         objVentana.mostrarMensaje(objListaEnlazada.MostarLista());
     }
 
-    public void alertas() {
-        objVentana.mostrarMensaje("ALERTAS: ");
-        if (objListaEstacion.getEstacion() != null) {
-            for (Estacion estacion : objListaEstacion.getEstacion()) {
-                if (estacion.getFlujoPersonas() > estacion.getCapacidadMaxima()) {
-                    objVentana.mostrarMensaje("Estacion: " + estacion.getNombreEstacion() + ":" + " Estacion llena");
-                } else {
-                    objVentana.mostrarMensaje("Estacion: " + estacion.getNombreEstacion() + ": " + " Sin anomalias");
-                }
-            }
-        } else {
-            objVentana.mostrarMensaje("No hay estaciones");
-        }
-    }
-
     public void validarAcceso() {
         objVentana.mostrarMensaje(" ");
         int op;
@@ -485,16 +525,13 @@ public class Controlador {
             objVentana.acceso();
             op = entero();
             switch (op) {
-                case 1:
+                case 1 ->
                     ingresar();
-                    break;
-                case 2:
+                case 2 ->
                     validar();
-                    break;
-                case 3:
+                case 3 ->
                     objVentana.mostrarMensaje("Saliendo de validar acceso");
-                    break;
-                default:
+                default ->
                     objVentana.mostrarMensaje("Opcion invalidad. Ingrese una de las opciones disponibles");
             }
         } while (op != 3);
@@ -541,58 +578,20 @@ public class Controlador {
                 objVentana.mostrarMensaje("Usuario: " + objHashTable.obtenerUsuario(id).toString());
             }
         }
-
     }
 
-    public void mostrarEstacionesRutas() {
-        objVentana.mostrarMensaje("--Listas de Paradas Por Estacion--");
-        for (Estacion estacion : objListaEstacion.getEstacion()) {
-            objVentana.mostrarMensaje(" ");
-            objVentana.mostrarMensaje("Estacion: " + estacion.getNombreEstacion());
-            objVentana.mostrarMensaje("Rutas conexas: ");
-            String conexa = estacion.mostrarRutasConexas();
-            if (conexa != null && !conexa.isEmpty()) {
-                objVentana.mostrarMensaje(conexa);
-            } else {
-                objVentana.mostrarMensaje("No hay rutas conexas");
-            }
-        }
+    public void calcularRutas() {
+        objVentana.calcularRutas();
+        objVentana.mostrarMensaje("Ingrese la estación de inicio:");
+        String inicio = objVentana.pedirString();
+        objVentana.mostrarMensaje("Ingrese la estación de destino: ");
+        String fin = objVentana.pedirString();
+        objVentana.mostrarMensaje("");
+        objVentana.mostrarMensaje(objGrafoRutas.mostrarRutaMasCorta(inicio, fin));
+        objVentana.mostrarMensaje(" ");
     }
 
-    public void monitoreo() {
-
-        int op;
-        do {
-            objVentana.mostrarMensaje("---MONITOREO---");
-            objVentana.monitoreo();
-            op = entero();
-            switch (op) {
-                case 1:
-                    registrarCantidad();
-                    break;
-                case 2:
-                    alertas();
-                    break;
-                case 3:
-                    listaEstaciones();
-                    break;
-                case 4:
-                    mostrarEstacionesRutas();
-                    break;
-                case 5:
-                    monitoreoEstacion();
-                    break;
-                case 6:
-                    objVentana.mostrarMensaje("Saliendo del programa");
-                    break;
-                default:
-                    objVentana.mostrarMensaje("Opcion Invalida. Ingresar datos validos");
-            }
-
-        } while (op != 6);
-    }
-
-    public void datosPrecargados() {
+    public void precargarDatos() {
 
         //Datos precargados de estacion
         Estacion a1 = new Estacion("Ricaurte", 1000, 500, null, "Moderada", true);
@@ -652,14 +651,14 @@ public class Controlador {
     public int entero() {
         //Método sobrecargado para que no explote todo el codigo xd
         int numero = -1;
-        
+
         try {
             numero = objVentana.pedirEntero();
-            objVentana.mostrarMensaje("Usando metodo entero() sobrecargado");
+            objVentana.mostrarMensaje("Usando metodo entero() sobrecargado para la consola");
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }
-        
+
         return numero;
     }
 
@@ -677,50 +676,6 @@ public class Controlador {
             objVentana.mostrarMensaje("Datos de entrada invalidos. Ingresar entradas validas");
             return null;
         }
-    }
-
-    public void registrarCantidad() {
-
-        Integer cantidad = entero(principal.getTxtNumeroPersonas());
-
-        if (cantidad == null) {
-            JOptionPane.showMessageDialog(principal, "Debe ingresar un número de personas", "Transmilenio S.A.", JOptionPane.ERROR_MESSAGE);
-            return; //No continua si está vacío
-        } else if (cantidad < 0) {
-            JOptionPane.showMessageDialog(principal, "El número no debe ser negativo", "Transmilenio S.A.", JOptionPane.ERROR_MESSAGE);
-            return; //No continua si es negativo
-        }
-
-        String nombreEstacion = principal.getLstListEstaciones().getSelectedValue();
-        Estacion estacion = objListaEstacion.buscarNombre(nombreEstacion);
-
-        if (estacion != null) {
-            estacion.setFlujoPersonas(cantidad);
-            JOptionPane.showMessageDialog(principal, "Número de personas registrado exitosamente", "Transmilenio S.A.", JOptionPane.PLAIN_MESSAGE);
-        } else {
-            JOptionPane.showMessageDialog(principal, "Debe seleccionar una estación", "Transmilenio S.A.", JOptionPane.ERROR_MESSAGE);
-        }
-
-    }
-
-    public void calcularRutas() {
-        objVentana.calcularRutas();
-        objVentana.mostrarMensaje("Ingrese la estación de inicio:");
-        String inicio = objVentana.pedirString();
-        objVentana.mostrarMensaje("Ingrese la estación de destino: ");
-        String fin = objVentana.pedirString();
-        objVentana.mostrarMensaje("");
-        objVentana.mostrarMensaje(objGrafoRutas.mostrarRutaMasCorta(inicio, fin));
-        objVentana.mostrarMensaje(" ");
-    }
-
-    //VIEW
-    public void mostrarEstacionesEnLista() {
-        List<Estacion> estaciones = objListaEstacion.getEstacion();
-        String[] nombres = estaciones.stream()
-                .map(Estacion::getNombreEstacion)
-                .toArray(String[]::new);
-        principal.setListaEstaciones(nombres);
     }
 
 }
